@@ -60,11 +60,11 @@ int prv_kii_jsmn_get_tokens(
     return ret;
 }
 
-int prv_kii_jsmn_get_value(
+static int prv_kii_jsmn_get_value(
         const char* json_string,
         size_t json_string_len,
         const jsmntok_t* tokens,
-        const char* name,
+        const char* key,
         jsmntok_t** out_token)
 {
     int i = 0;
@@ -73,7 +73,7 @@ int prv_kii_jsmn_get_value(
 
     assert(json_string != NULL);
     assert(tokens != NULL);
-    assert(name != NULL && strlen(name) > 0);
+    assert(key != NULL && strlen(key) > 0);
     assert(out_token != NULL);
 
     if (tokens[0].type != JSMN_OBJECT && tokens[0].size < 2) {
@@ -86,7 +86,7 @@ int prv_kii_jsmn_get_value(
         if (key_token->type != JSMN_STRING) {
             goto exit;
         }
-        if (strcmp(name, json_string + key_token->start) == 0) {
+        if (strcmp(key, json_string + key_token->start) == 0) {
             ret = 0;
             *out_token = (jsmntok_t*)value_token;
             break;
@@ -116,3 +116,35 @@ exit:
     return ret;
 }
 
+int prv_kii_jsmn_copy_string_value(
+        const char* json_string,
+        size_t json_string_len,
+        jsmntok_t* tokens,
+        const char* key,
+        char* coping_buf)
+{
+    int result = -1;
+    jsmntok_t* target = NULL;
+
+    assert(json_string != NULL);
+    assert(tokens != NULL);
+    assert(key != NULL && strlen(key) > 0);
+    assert(coping_buf != NULL);
+
+    result = prv_kii_jsmn_get_value(json_string, json_string_len, tokens,
+            key, &target);
+     if (result != 0) {
+         return result;
+     }
+     if (target == NULL) {
+         return -1;
+     }
+     if (target->type != JSMN_STRING) {
+         return -1;
+     }
+
+    memcpy(coping_buf, json_string + target->start,
+            target->end - target->start);
+
+    return 0;
+}

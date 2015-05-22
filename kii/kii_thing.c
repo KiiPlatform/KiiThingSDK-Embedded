@@ -19,7 +19,6 @@ int kii_thing_authenticate(
     kii_error_code_t core_err;
     kii_state_t state;
     jsmntok_t tokens[KII_JSON_TOKEN_NUM];
-    jsmntok_t* access_token = NULL;
     size_t buf_size = 0;
 
     buf = kii->kii_core.http_context.buffer;
@@ -48,18 +47,14 @@ int kii_thing_authenticate(
     if (tokens[0].type != JSMN_OBJECT || tokens[0].size < 2) {
         goto exit;
     }
-    ret = prv_kii_jsmn_get_value(buf, buf_size, tokens, "access_token",
-            &access_token);
+
+    ret = prv_kii_jsmn_copy_string_value(buf, buf_size, tokens, "access_token",
+            kii->kii_core.author.access_token);
     if (ret != 0) {
         goto exit;
     }
-    if (access_token == NULL) {
-        goto exit;
-    }
-
     strcpy(kii->kii_core.author.author_id, vendor_thing_id);
-    memcpy(kii->kii_core.author.access_token, buf + access_token->start,
-            access_token->end - access_token->start);
+
     ret = 0;
 
 exit:
@@ -75,7 +70,6 @@ int kii_thing_register(
     char* buf;
     char thing_data[1024];
     jsmntok_t tokens[KII_JSON_TOKEN_NUM];
-    jsmntok_t* access_token = NULL;
     size_t buf_size = 0;
     int ret = -1;
     kii_error_code_t core_err;
@@ -109,16 +103,11 @@ int kii_thing_register(
     if (tokens[0].type != JSMN_OBJECT || tokens[0].size < 2) {
         goto exit;
     }
-    ret = prv_kii_jsmn_get_value(buf, buf_size, tokens, "access_token",
-            &access_token);
+    ret = prv_kii_jsmn_copy_string_value(buf, buf_size, tokens, "access_token",
+            kii->kii_core.author.access_token);
     if (ret != 0) {
         goto exit;
     }
-    if (access_token == NULL) {
-        goto exit;
-    }
-    memcpy(kii->kii_core.author.access_token, buf + access_token->start,
-            access_token->end - access_token->start);
     strcpy(kii->kii_core.author.author_id, vendor_thing_id);
     ret = 0;
 
