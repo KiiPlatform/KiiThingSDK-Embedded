@@ -10,11 +10,11 @@ int prv_kii_jsmn_get_tokens(
         jsmntok_t* tokens,
         size_t token_num);
 
-int prv_kii_jsmn_get_value(
+int prv_kii_jsmn_copy_string_value(
         const char* json_string,
         size_t json_string_len,
-        const jsmntok_t* tokens,
-        const char* name,
-        jsmntok_t** out_token);
+        jsmntok_t* toknes,
+        const char* key,
+        char* coping_buf);
 
 #endif
