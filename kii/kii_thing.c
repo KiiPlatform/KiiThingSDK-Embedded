@@ -7,6 +7,8 @@
 
 #include "kii_core.h"
 
+static char static_buf[1024];
+
 int kii_thing_authenticate(
         kii_t* kii,
         const char* vendor_thing_id,
@@ -79,7 +81,8 @@ int kii_thing_register(
         const char* password)
 {
     char* buf = NULL;
-    char thing_data[1024];
+    /* XXX: too larger in GT202 stack memory */
+    char* thing_data = static_buf;
     size_t buf_size = 0;
     int ret = -1;
     kii_error_code_t core_err;
