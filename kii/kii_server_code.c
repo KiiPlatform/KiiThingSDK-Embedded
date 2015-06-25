@@ -12,7 +12,6 @@ int kii_server_code_execute(kii_t* kii, const char* endpoint_name, const char* p
     kii_error_code_t core_err;
     kii_state_t state;
     char resource_path[256];
-    size_t params_size = 0;
 
     memset(resource_path, 0x00, sizeof(resource_path));
     strcpy(resource_path, "api/apps/");
@@ -20,15 +19,11 @@ int kii_server_code_execute(kii_t* kii, const char* endpoint_name, const char* p
     strcat(resource_path, "/server-code/versions/current/");
     strcat(resource_path, endpoint_name);
     
-    if(params != NULL) {
-        params_size = strlen(params);
-    }
     core_err = kii_core_api_call(
             &kii->kii_core,
             "POST",
             resource_path,
             params,
-            params_size,
             "application/json",
             NULL);
     if (core_err != KIIE_OK) {
