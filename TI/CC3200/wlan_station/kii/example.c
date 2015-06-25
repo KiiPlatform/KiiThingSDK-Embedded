@@ -135,7 +135,7 @@ int kiiDemo_test(void)
         UART_PRINT("failed!\r\n");
     }
     UART_PRINT("upload body at once\r\n");
-    ret = kii_object_upload_body_at_once(&kii, &bucket, EX_OBJECT_ID, "text/plain", "1234", 4);
+    ret = kii_object_upload_body_at_once(&kii, &bucket, EX_OBJECT_ID, "text/plain", "1234");
     if(ret == 0) {
         UART_PRINT("success!\r\n");
     } else {
@@ -155,7 +155,6 @@ int kiiDemo_test(void)
         memset(content_type, 0x00, sizeof(content_type));
         strcpy(content_type, "text/plain");
         chunk.body_content_type = content_type;
-        chunk.length = strlen(object_data);
         chunk.position = 0;
         chunk.total_length = strlen(object_data);
         ret = kii_object_upload_body(&kii, &bucket, EX_OBJECT_ID, upload_id, &chunk);

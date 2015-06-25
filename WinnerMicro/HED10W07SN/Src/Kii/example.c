@@ -136,7 +136,7 @@ int kiiDemo_test(char *buf)
         printf("failed!\n");
     }
     printf("upload body at once\n");
-    ret = kii_object_upload_body_at_once(&kii, &bucket, EX_OBJECT_ID, "text/plain", "1234", 4);
+    ret = kii_object_upload_body_at_once(&kii, &bucket, EX_OBJECT_ID, "text/plain", "1234");
     if(ret == 0) {
         printf("success!\n");
     } else {
@@ -156,7 +156,6 @@ int kiiDemo_test(char *buf)
         memset(content_type, 0x00, sizeof(content_type));
         strcpy(content_type, "text/plain");
         chunk.body_content_type = content_type;
-        chunk.length = strlen(object_data);
         chunk.position = 0;
         chunk.total_length = strlen(object_data);
         ret = kii_object_upload_body(&kii, &bucket, EX_OBJECT_ID, upload_id, &chunk);
