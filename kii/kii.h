@@ -206,8 +206,7 @@ int kii_object_get(
  *  \param [in] bucket specify the bucket of which object is stored.
  *  \param [in] object_id specify the id of the object of which body is added.
  *  \param [in] body_content_type content-type of the body.
- *  \param [in] data object body data.
- *  \param [in] data_length length of the data.
+ *  \param [in] data object body data. This must be null-terminated byte string.
  *  \return 0:success, -1: failure
  */
 int kii_object_upload_body_at_once(
@@ -215,8 +214,7 @@ int kii_object_upload_body_at_once(
 		const kii_bucket_t* bucket,
 		const char* object_id,
 		const char* body_content_type,
-		const char* data,
-		size_t data_length);
+		const char* data);
 
 /** Initiate chunked object body upload.
  *  \param [inout] kii sdk instance.
@@ -239,11 +237,9 @@ typedef struct kii_chunk_data_t {
 	char* body_content_type;
 	/** position of the chunk.(bytes count) */
 	unsigned int position;
-	/** length of the chunk */
-	unsigned int length;
 	/** total length of the body */
 	unsigned int total_length;
-	/** chunk data */
+	/** chunk data. This must be null-terminated byte string. */
 	char* chunk;
 } kii_chunk_data_t;
 

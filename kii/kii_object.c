@@ -252,8 +252,7 @@ int kii_object_upload_body_at_once(
         const kii_bucket_t* bucket,
         const char* object_id,
         const char* body_content_type,
-        const char* data,
-        size_t data_length)
+        const char* data)
 {
     int ret = -1;
     kii_error_code_t core_err;
@@ -277,7 +276,6 @@ int kii_object_upload_body_at_once(
             "PUT",
             resource_path,
             data,
-            data_length,
             body_content_type,
             NULL);
     if (core_err != KIIE_OK) {
@@ -331,7 +329,6 @@ int kii_object_init_upload_body(
             "POST",
             resource_path,
             "{}",
-            2,
             "application/vnd.kii.startobjectbodyuploadrequest+json",
             "accept:application/vnd.kii.startobjectbodyuploadresponse+json",
             (char*)(0));
@@ -385,6 +382,7 @@ int kii_object_upload_body(
     kii_state_t state;
     char resource_path[256];
     char content_range[128];
+    unsigned int chunk_length = 0;
 
     memset(resource_path, 0x00, sizeof(resource_path));
     strcpy(resource_path, "api/apps/");
@@ -401,13 +399,16 @@ int kii_object_upload_body(
     strcat(resource_path, upload_id);
     strcat(resource_path, "/data");
 
+    if (chunk->chunk != NULL) {
+        chunk_length = strlen(chunk->chunk);
+    }
     /* content-range */
     memset(content_range, 0x00, sizeof(content_range));
     strcpy(content_range, "Content-Range: ");
     strcat(content_range, "bytes=");
     sprintf(content_range + strlen(content_range), "%d", chunk->position);
     strcat(content_range, "-");
-    sprintf(content_range + strlen(content_range), "%d", chunk->position+ chunk->length- 1);
+    sprintf(content_range + strlen(content_range), "%d", chunk->position+ chunk_length- 1);
     strcat(content_range, "/");
     sprintf(content_range + strlen(content_range), "%d", chunk->total_length);
 
@@ -416,7 +417,6 @@ int kii_object_upload_body(
             "PUT",
             resource_path,
             chunk->chunk,
-            chunk->length,
             chunk->body_content_type,
             "Accept: application/json, application/*+json",
             content_range,
@@ -479,7 +479,6 @@ int kii_object_commit_upload(
             "POST",
             resource_path,
             NULL,
-            0,
             NULL,
             NULL);
     if (core_err != KIIE_OK) {
@@ -533,7 +532,6 @@ int kii_object_download_body_at_once(
             "GET",
             resource_path,
             NULL,
-            0,
             NULL,
             "Accept: */*",
             (char*)(0));
@@ -606,7 +604,6 @@ int kii_object_download_body(
             "GET",
             resource_path,
             NULL,
-            0,
             NULL,
             range,
             "Accept: */*",
