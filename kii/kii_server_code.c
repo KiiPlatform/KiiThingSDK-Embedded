@@ -11,10 +11,15 @@ int kii_server_code_execute(kii_t* kii, const char* endpoint_name, const char* p
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    char resource_path[256];
+    char *resource_path = kii->temp_buffer;
     size_t params_size = 0;
 
-    memset(resource_path, 0x00, sizeof(resource_path));
+    if (kii->temp_buffer == NULL) {
+        M_KII_LOG(kii->kii_core.logger_cb("temp_buffer is not set.\n"));
+        return -1;
+    }
+
+    memset(resource_path, 0x00, 256);
     strcpy(resource_path, "api/apps/");
     strcat(resource_path, kii->kii_core.app_id);
     strcat(resource_path, "/server-code/versions/current/");

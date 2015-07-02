@@ -79,7 +79,7 @@ int kii_thing_register(
         const char* password)
 {
     char* buf = NULL;
-    char thing_data[1024];
+    char *thing_data = kii->temp_buffer;
     size_t buf_size = 0;
     int ret = -1;
     kii_error_code_t core_err;
@@ -87,6 +87,11 @@ int kii_thing_register(
     kii_json_field_t fields[3];
     kii_json_parse_result_t result;
     kii_json_t kii_json;
+
+    if (kii->temp_buffer == NULL) {
+        M_KII_LOG(kii->kii_core.logger_cb("temp_buffer is not set.\n"));
+        return -1;
+    }
 
     sprintf(thing_data,
             "{\"_vendorThingID\":\"%s\",\"_thingType\":\"%s\",\"_password\":\"%s\"}",

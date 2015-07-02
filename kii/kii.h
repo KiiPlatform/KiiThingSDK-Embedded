@@ -16,6 +16,8 @@ extern "C" {
 
 #define KII_UPLOADID_SIZE 64
 
+#define DEBUG
+
 #ifdef DEBUG
 #ifndef __FILE__
 #define __FILE__ ("__FILE__ macro is not available")
@@ -62,6 +64,9 @@ typedef struct kii_t {
     size_t mqtt_buffer_size;
 
     void* app_context;
+
+    // These are workaround.
+    char* temp_buffer;
 
 } kii_t;
 

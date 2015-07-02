@@ -44,6 +44,11 @@ int main(int argc, char** argv)
     memset(&ssl_context, 0x00, sizeof(context_t));
 
     kii_init(&kii, EX_APP_SITE, EX_APP_ID, EX_APP_KEY);
+    kii.temp_buffer = malloc(sizeof(char) * 1024);
+    if (kii.temp_buffer == NULL) {
+        printf("fail to allocate temp_buffer");
+        return -1;
+    }
     kii.kii_core.http_context.buffer = buffer;
     kii.kii_core.http_context.buffer_size = buffer_size;
     kii.kii_core.http_context.app_context = &ssl_context;

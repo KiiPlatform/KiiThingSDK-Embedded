@@ -261,9 +261,13 @@ int kii_object_upload_body_at_once(
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    char resource_path[256];
+    char *resource_path = kii->temp_buffer;
+    if (kii->temp_buffer == NULL) {
+        M_KII_LOG(kii->kii_core.logger_cb("temp_buffer is not set.\n"));
+        return -1;
+    }
 
-    memset(resource_path, 0x00, sizeof(resource_path));
+    memset(resource_path, 0x00, 256);
     strcpy(resource_path, "api/apps/");
     strcat(resource_path, kii->kii_core.app_id);
     if(bucket->scope == KII_SCOPE_THING) {
@@ -312,13 +316,18 @@ int kii_object_init_upload_body(
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    char resource_path[256];
+    char *resource_path = kii->temp_buffer;
     kii_json_field_t fields[2];
     kii_json_parse_result_t result;
     size_t buf_size = 0;
     kii_json_t kii_json;
 
-    memset(resource_path, 0x00, sizeof(resource_path));
+    if (kii->temp_buffer == NULL) {
+        M_KII_LOG(kii->kii_core.logger_cb("temp_buffer is not set.\n"));
+        return -1;
+    }
+
+    memset(resource_path, 0x00, 256);
     strcpy(resource_path, "api/apps/");
     strcat(resource_path, kii->kii_core.app_id);
     if(bucket->scope == KII_SCOPE_THING) {
@@ -389,10 +398,15 @@ int kii_object_upload_body(
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    char resource_path[256];
+    char *resource_path = kii->temp_buffer;
     char content_range[128];
 
-    memset(resource_path, 0x00, sizeof(resource_path));
+    if (kii->temp_buffer == NULL) {
+        M_KII_LOG(kii->kii_core.logger_cb("temp_buffer is not set.\n"));
+        return -1;
+    }
+
+    memset(resource_path, 0x00, 256);
     strcpy(resource_path, "api/apps/");
     strcat(resource_path, kii->kii_core.app_id);
     if(bucket->scope == KII_SCOPE_THING) {
@@ -457,9 +471,14 @@ int kii_object_commit_upload(
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    char resource_path[256];
+    char *resource_path = kii->temp_buffer;
 
-    memset(resource_path, 0x00, sizeof(resource_path));
+    if (kii->temp_buffer == NULL) {
+        M_KII_LOG(kii->kii_core.logger_cb("temp_buffer is not set.\n"));
+        return -1;
+    }
+
+    memset(resource_path, 0x00, 256);
     strcpy(resource_path, "api/apps/");
     strcat(resource_path, kii->kii_core.app_id);
     if(bucket->scope == KII_SCOPE_THING) {
@@ -519,9 +538,14 @@ int kii_object_download_body_at_once(
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    char resource_path[256];
+    char *resource_path = kii->temp_buffer;
 
-    memset(resource_path, 0x00, sizeof(resource_path));
+    if (kii->temp_buffer == NULL) {
+        M_KII_LOG(kii->kii_core.logger_cb("temp_buffer is not set.\n"));
+        return -1;
+    }
+
+    memset(resource_path, 0x00, 256);
     strcpy(resource_path, "api/apps/");
     strcat(resource_path, kii->kii_core.app_id);
     if(bucket->scope == KII_SCOPE_THING) {
@@ -583,10 +607,15 @@ int kii_object_download_body(
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    char resource_path[256];
-    char range[128];
+    char *resource_path = kii->temp_buffer;
+    char *range = kii->temp_buffer + 256;
 
-    memset(resource_path, 0x00, sizeof(resource_path));
+    if (kii->temp_buffer == NULL) {
+        M_KII_LOG(kii->kii_core.logger_cb("temp_buffer is not set.\n"));
+        return -1;
+    }
+
+    memset(resource_path, 0x00, 256);
     strcpy(resource_path, "api/apps/");
     strcat(resource_path, kii->kii_core.app_id);
     if(bucket->scope == KII_SCOPE_THING) {
@@ -600,7 +629,7 @@ int kii_object_download_body(
     strcat(resource_path, "/body");
 
     /* Range */
-    memset(range, 0x00, sizeof(range));
+    memset(range, 0x00, 128);
     strcpy(range, "Range: ");
     strcat(range, "bytes=");
     sprintf(range + strlen(range), "%d", position);

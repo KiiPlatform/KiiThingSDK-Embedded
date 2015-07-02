@@ -55,11 +55,21 @@ int kiiDemo_test(char *buf)
 		free(buffer);
 		return -1;
 	}
+    temp_buffer = malloc(sizeof(char) * 1024);
+    if (temp_buffer == NULL) {
+        logger_cb("allocate memory failed\n");
+        free(context);
+        free(buffer);
+        free(mqtt_buffer);
+        return -1;
+    }
     memset(buffer, 0x00, buffer_size);
     memset(mqtt_buffer, 0x00, mqtt_buffer_size);
     memset(context, 0x00, sizeof(context_t));
+    memset(temp_buffer, 0x00, sizeof(char) * 1024);
 
     kii_init(&kii, EX_APP_SITE, EX_APP_ID, EX_APP_KEY);
+    kii.temp_buffer = temp_buffer;
     kii.kii_core.http_context.buffer = buffer;
     kii.kii_core.http_context.buffer_size = buffer_size;
     kii.kii_core.http_context.app_context = context;
