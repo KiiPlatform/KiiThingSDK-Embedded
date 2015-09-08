@@ -122,6 +122,17 @@ int kii_thing_authenticate(
 		const char* vendor_thing_id,
 		const char* password);
 
+/** Authorize thing with request body.
+ *  After the authentication, access token is used to call APIs access to
+ *  Kii Cloud so that the thing can access private data.
+ *  \param [inout] kii sdk instance.
+ *  \param [in] body body of authentication request.
+ *  \return 0:success, -1: failure
+ */
+int kii_thing_authenticate_with_body(
+		kii_t* kii,
+		const char* body);
+
 /** Register new thing
  *  After the registtration, access token is used to call APIs access to
  *  Kii Cloud so that the thing can access private data.

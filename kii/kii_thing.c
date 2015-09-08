@@ -78,6 +78,65 @@ exit:
     return ret;
 }
 
+int kii_thing_authenticate_with_body(
+        kii_t* kii,
+        const char* body)
+{
+    char* buf;
+    int ret = -1;
+    kii_error_code_t core_err;
+    kii_state_t state;
+    kii_json_field_t fields[3];
+    kii_json_parse_result_t result;
+    size_t buf_size = 0;
+
+    core_err = kii_core_thing_authentication_with_body(&kii->kii_core, body);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    do {
+        core_err = kii_core_run(&kii->kii_core);
+        state = kii_core_get_state(&kii->kii_core);
+    } while (state != KII_STATE_IDLE);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    if(kii->kii_core.response_code < 200 || 300 <= kii->kii_core.response_code) {
+        goto exit;
+    }
+
+    buf = kii->kii_core.response_body;
+    buf_size = strlen(kii->kii_core.response_body);
+    if (buf == NULL) {
+        ret = -1;
+        goto exit;
+    }
+
+    memset(fields, 0, sizeof(fields));
+    fields[0].name = "id";
+    fields[0].type = KII_JSON_FIELD_TYPE_STRING;
+    fields[0].field_copy.string = kii->kii_core.author.author_id;
+    fields[0].field_copy_buff_size = sizeof(kii->kii_core.author.author_id) /
+            sizeof(kii->kii_core.author.author_id[0]);
+    fields[1].name = "access_token";
+    fields[1].type = KII_JSON_FIELD_TYPE_STRING;
+    fields[1].field_copy.string = kii->kii_core.author.access_token;
+    fields[1].field_copy_buff_size = sizeof(kii->kii_core.author.access_token) /
+            sizeof(kii->kii_core.author.access_token[0]);
+    fields[2].name = NULL;
+
+    result = prv_kii_json_read_object(kii, buf, buf_size, fields);
+    if (result != KII_JSON_PARSE_SUCCESS) {
+        ret = -1;
+        goto exit;
+    }
+
+    ret = 0;
+
+exit:
+    return ret;
+}
+
 int kii_thing_register(
         kii_t* kii,
         const char* vendor_thing_id,
