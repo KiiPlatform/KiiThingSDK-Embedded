@@ -61,6 +61,26 @@ TEST(kiiTest, authenticate)
     ASSERT_STRNE("", kii.kii_core.author.access_token);
 }
 
+TEST(kiiTest, authenticate_with_body)
+{
+    int ret = -1;
+    char buffer[4096];
+    kii_t kii;
+
+    init(&kii, buffer, 4096);
+
+    strcpy(kii.kii_core.author.author_id, "");
+    strcpy(kii.kii_core.author.access_token, "");
+    kii.kii_core.response_code = 0;
+    ret = kii_thing_authenticate_with_body(&kii,
+            "{\"username\":\"VENDOR_THING_ID:1426830900\",\"password\":\"1234\"}");
+
+    ASSERT_EQ(0, ret);
+    ASSERT_EQ(200, kii.kii_core.response_code);
+    ASSERT_STRNE("", kii.kii_core.author.author_id);
+    ASSERT_STRNE("", kii.kii_core.author.access_token);
+}
+
 TEST(kiiTest, register)
 {
     int ret = -1;
