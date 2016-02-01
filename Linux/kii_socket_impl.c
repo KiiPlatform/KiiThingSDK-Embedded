@@ -12,6 +12,9 @@
 #include <unistd.h>
 #include <errno.h>
 
+#include <sys/select.h>
+#include <sys/time.h>
+
 kii_socket_code_t
     mqtt_connect_cb(kii_socket_context_t* socket_context, const char* host,
             unsigned int port)
@@ -36,19 +39,6 @@ kii_socket_code_t
         printf("failed to init socket.\n");
         return KII_SOCKETC_FAIL;
     }
-
-#ifdef KII_PUSH_PING_ENABLE
-    {
-        struct timeval timeout;
-        timeout.tv_sec = KII_PUSH_KEEP_ALIVE_INTERVAL_SECONDS * 2;
-        timeout.tv_usec = 0;
-        if (setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout,
-                        sizeof(timeout)) != 0) {
-            printf("fail to set option for socket: %d\n", errno);
-            return KII_SOCKETC_FAIL;
-        }
-    }
-#endif
 
     if (connect(sock, (struct sockaddr*) &server, sizeof(server)) == -1 ){
         printf("failed to connect socket.\n");
@@ -83,6 +73,34 @@ kii_socket_code_t
             size_t* out_actual_length)
 {
     int ret;
+
+#ifdef KII_PUSH_PING_ENABLE
+    {
+        fd_set fds;
+        int selected_num = 1;
+        struct timeval time;
+
+        time.tv_sec = KII_PUSH_KEEP_ALIVE_INTERVAL_SECONDS;
+        time.tv_usec = 0;
+
+        FD_ZERO(&fds);
+        FD_SET(socket_context->socket, &fds);
+
+        selected_num =
+            select(socket_context->socket + 1, &fds, NULL, NULL, &time);
+        if (selected_num == 0) {
+            printf("HERE A:\n");
+            return KII_SOCKETC_AGAIN;
+        } else if (selected_num == 1) {
+            // this is success case. nothing to do.
+        } else if (selected_num > 1) {
+            // unexpected case.
+            return KII_SOCKETC_FAIL;
+        } else {
+            return KII_SOCKETC_FAIL;
+        }
+    }
+#endif
 
     ret = recv(socket_context->socket, buffer, length_to_read, 0);
     if (ret > 0) {

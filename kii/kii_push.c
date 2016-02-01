@@ -379,7 +379,11 @@ static void* kiiPush_recvMsgTask(void* sdata)
             M_KII_LOG(kii->kii_core.logger_cb("readPointer: %d\r\n", kii->mqtt_buffer + bytes));
 
             rcvdCounter = 0;
-            kii->mqtt_socket_recv_cb(&kii->mqtt_socket_context, kii->mqtt_buffer, 2, &rcvdCounter);
+            if (kii->mqtt_socket_recv_cb(
+                    &kii->mqtt_socket_context, kii->mqtt_buffer, 2,
+                    &rcvdCounter) == KII_SOCKETC_AGAIN) {
+                continue;
+            }
             if(rcvdCounter == 2)
             {
                 if((kii->mqtt_buffer[0] & 0xf0) == 0x30)
