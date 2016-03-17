@@ -66,6 +66,7 @@
 #define HTTP1_1 "HTTP/1.1 "
 #define END_OF_HEADER "\r\n\r\n"
 #define CONST_LEN(str) sizeof(str) - 1
+#define KII_SDK_VERSION "0.9.1"
 
 const char DEFAULT_OBJECT_CONTENT_TYPE[] = "application/json";
 
@@ -110,6 +111,9 @@ kii_core_init(
 
     kii->app_id = (char*)app_id;
     kii->app_key = (char*)app_key;
+    kii_sprintf(kii->sdk_info,
+            "sn=is;sv=%s;",
+            KII_SDK_VERSION);
     return KIIE_OK;
 }
 
@@ -487,7 +491,7 @@ prv_set_thing_register_path(kii_core_t* kii)
             kii->app_id);
 }
 
-    static kii_error_code_t 
+    static kii_error_code_t
 prv_http_request_line_and_headers(
         kii_core_t* kii,
         const char* method,
@@ -525,6 +529,14 @@ prv_http_request_line_and_headers(
             kii,
             "x-kii-appkey",
             kii->app_key);
+    if (result != KII_HTTPC_OK) {
+        M_KII_LOG(M_REQUEST_HEADER_CB_FAILED);
+        return KIIE_FAIL;
+    }
+    result = prv_kii_http_set_header(
+            kii,
+            "x-kii-sdk",
+            kii->sdk_info);
     if (result != KII_HTTPC_OK) {
         M_KII_LOG(M_REQUEST_HEADER_CB_FAILED);
         return KIIE_FAIL;
@@ -567,7 +579,7 @@ prv_http_request_line_and_headers(
         result = prv_kii_http_set_header(
                 kii,
                 "if-match",
-                etag 
+                etag
                 );
         if (result != KII_HTTPC_OK) {
             M_KII_LOG(M_REQUEST_LINE_CB_FAILED);
