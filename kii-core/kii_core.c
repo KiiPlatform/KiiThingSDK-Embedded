@@ -66,7 +66,7 @@
 #define HTTP1_1 "HTTP/1.1 "
 #define END_OF_HEADER "\r\n\r\n"
 #define CONST_LEN(str) sizeof(str) - 1
-#define KII_SDK_VERSION "1.1.1"
+#define KII_SDK_VERSION "sn=te;sv=1.1.1"
 
 const char DEFAULT_OBJECT_CONTENT_TYPE[] = "application/json";
 
@@ -111,9 +111,7 @@ kii_core_init(
 
     kii->app_id = (char*)app_id;
     kii->app_key = (char*)app_key;
-    kii_sprintf(kii->sdk_info,
-            "sn=te;sv=%s;",
-            KII_SDK_VERSION);
+    kii->sdk_info = KII_SDK_VERSION;
     return KIIE_OK;
 }
 

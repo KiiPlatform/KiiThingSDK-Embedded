@@ -48,7 +48,7 @@ typedef enum prv_kii_socket_state_t {
 } prv_kii_socket_state_t;
 
 #endif
-#define KII_SDK_VERSION "1.1.1"
+
 /** bool type definition */
 typedef enum kii_bool_t {
     KII_FALSE = 0,
