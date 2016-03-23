@@ -112,7 +112,7 @@ kii_core_init(
     kii->app_id = (char*)app_id;
     kii->app_key = (char*)app_key;
     kii_sprintf(kii->sdk_info,
-            "sn=is;sv=%s;",
+            "sn=te;sv=%s;",
             KII_SDK_VERSION);
     return KIIE_OK;
 }
