@@ -351,7 +351,7 @@ typedef struct kii_core_t
      * value is set by implementation of KII_HTTPCB_EXECUTE
      */
     int response_code;
-    /** HTTP response body 
+    /** HTTP response body
      * value is set by implementation of KII_HTTPCB_EXECUTE
      */
     char* response_body;
@@ -424,6 +424,9 @@ typedef struct kii_core_t
     kii_state_t _state;
 
     size_t _content_length;
+
+    /** Kii Cloud sdk info */
+    const char* sdk_info;
 } kii_core_t;
 
 

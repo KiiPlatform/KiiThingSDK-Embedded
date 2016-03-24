@@ -1,5 +1,6 @@
 #include "kii_core.h"
 #include "kii_libc_wrapper.h"
+#include "kii_core_hidden.h"
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -66,15 +67,17 @@
 #define HTTP1_1 "HTTP/1.1 "
 #define END_OF_HEADER "\r\n\r\n"
 #define CONST_LEN(str) sizeof(str) - 1
+#define KII_SDK_VERSION "sn=tec;sv=1.1.1"
 
 const char DEFAULT_OBJECT_CONTENT_TYPE[] = "application/json";
 
     kii_error_code_t
-kii_core_init(
+kii_core_init_with_version(
         kii_core_t* kii,
         const char* site,
         const char* app_id,
-        const char* app_key)
+        const char* app_key,
+        const char* version)
 {
     M_KII_ASSERT(kii != NULL);
     M_KII_ASSERT(site != NULL);
@@ -110,7 +113,19 @@ kii_core_init(
 
     kii->app_id = (char*)app_id;
     kii->app_key = (char*)app_key;
+    kii->sdk_info = version;
     return KIIE_OK;
+}
+
+    kii_error_code_t
+kii_core_init(
+        kii_core_t* kii,
+        const char* site,
+        const char* app_id,
+        const char* app_key)
+{
+    return kii_core_init_with_version(kii, site, app_id, app_id,
+            KII_SDK_VERSION);
 }
 
     kii_state_t
@@ -487,7 +502,7 @@ prv_set_thing_register_path(kii_core_t* kii)
             kii->app_id);
 }
 
-    static kii_error_code_t 
+    static kii_error_code_t
 prv_http_request_line_and_headers(
         kii_core_t* kii,
         const char* method,
@@ -525,6 +540,14 @@ prv_http_request_line_and_headers(
             kii,
             "x-kii-appkey",
             kii->app_key);
+    if (result != KII_HTTPC_OK) {
+        M_KII_LOG(M_REQUEST_HEADER_CB_FAILED);
+        return KIIE_FAIL;
+    }
+    result = prv_kii_http_set_header(
+            kii,
+            "x-kii-sdk",
+            kii->sdk_info);
     if (result != KII_HTTPC_OK) {
         M_KII_LOG(M_REQUEST_HEADER_CB_FAILED);
         return KIIE_FAIL;
@@ -567,7 +590,7 @@ prv_http_request_line_and_headers(
         result = prv_kii_http_set_header(
                 kii,
                 "if-match",
-                etag 
+                etag
                 );
         if (result != KII_HTTPC_OK) {
             M_KII_LOG(M_REQUEST_LINE_CB_FAILED);
