@@ -5,7 +5,22 @@
 #include "kii.h"
 #include "kii_json_utils.h"
 
-#include "kii_core.h"
+#include <kii_core.h>
+#include <kii_core_hidden.h>
+
+#define KII_SDK_VERSION "sn=te;sv=1.1.1"
+
+int kii_init_with_version(
+        kii_t* kii,
+        const char* site,
+        const char* app_id,
+        const char* app_key,
+        const char* version)
+{
+    memset(kii, 0x00, sizeof(kii_t));
+    return kii_core_init_with_version(&(kii->kii_core), site, app_id,
+            app_key, version) == KIIE_FAIL ? -1 : 0;
+}
 
 int kii_init(
         kii_t* kii,
@@ -13,9 +28,7 @@ int kii_init(
         const char* app_id,
         const char* app_key)
 {
-    memset(kii, 0x00, sizeof(kii_t));
-    return kii_core_init(&(kii->kii_core), site, app_id, app_key) ==
-            KIIE_FAIL ? -1 : 0;
+    return kii_init_with_version(kii, site, app_id, app_key, KII_SDK_VERSION);
 }
 
 int kii_thing_authenticate(

@@ -426,7 +426,7 @@ typedef struct kii_core_t
     size_t _content_length;
 
     /** Kii Cloud sdk info */
-    char* sdk_info;
+    const char* sdk_info;
 } kii_core_t;
 
 

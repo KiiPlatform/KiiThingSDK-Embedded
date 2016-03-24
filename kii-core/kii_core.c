@@ -1,5 +1,6 @@
 #include "kii_core.h"
 #include "kii_libc_wrapper.h"
+#include "kii_core_hidden.h"
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -66,16 +67,17 @@
 #define HTTP1_1 "HTTP/1.1 "
 #define END_OF_HEADER "\r\n\r\n"
 #define CONST_LEN(str) sizeof(str) - 1
-#define KII_SDK_VERSION "sn=te;sv=1.1.1"
+#define KII_SDK_VERSION "sn=tec;sv=1.1.1"
 
 const char DEFAULT_OBJECT_CONTENT_TYPE[] = "application/json";
 
     kii_error_code_t
-kii_core_init(
+kii_core_init_with_version(
         kii_core_t* kii,
         const char* site,
         const char* app_id,
-        const char* app_key)
+        const char* app_key,
+        const char* version)
 {
     M_KII_ASSERT(kii != NULL);
     M_KII_ASSERT(site != NULL);
@@ -111,8 +113,19 @@ kii_core_init(
 
     kii->app_id = (char*)app_id;
     kii->app_key = (char*)app_key;
-    kii->sdk_info = KII_SDK_VERSION;
+    kii->sdk_info = version;
     return KIIE_OK;
+}
+
+    kii_error_code_t
+kii_core_init(
+        kii_core_t* kii,
+        const char* site,
+        const char* app_id,
+        const char* app_key)
+{
+    return kii_core_init_with_version(kii, site, app_id, app_id,
+            KII_SDK_VERSION);
 }
 
     kii_state_t
