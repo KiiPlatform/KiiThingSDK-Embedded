@@ -106,6 +106,21 @@ typedef struct kii_t {
 
 } kii_t;
 
+typedef kii_bool_t (*KII_READER_OPEN_CB)(kii_t* kii, void* app_reader_context);
+typedef kii_bool_t (*KII_READER_READ_CB)(
+            kii_t* kii,
+            void* app_reader_context,
+            void* buff,
+            size_t buff_size,
+            size_t* out_size);
+typedef kii_bool_t (*KII_READER_CLOSE_CB)(kii_t* kii, void* app_reader_context);
+
+typedef struct kii_readers_t {
+    KII_READER_OPEN_CB open;
+    KII_READER_READ_CB read;
+    KII_READER_CLOSE_CB close;
+} kii_readers_t;
+
 /** Initializes Kii SDK
  *  \param [inout] kii sdk instance.
  *  \param [in] site the input of site name,
@@ -277,6 +292,20 @@ int kii_object_init_upload_body(
 		const kii_bucket_t* bucket,
 		const char* object_id,
 		char* out_upload_id);
+
+int kii_object_upload_at_once_with_reader(
+        kii_t* kii,
+        void* add_reader_context,
+        const kii_bucket_t* bucket,
+        kii_readers_t* readers,
+        char* out_object_id);
+
+int kii_object_upload_with_reader(
+        kii_t* kii,
+        void* add_reader_context,
+        const kii_bucket_t* bucket,
+        kii_readers_t* readers,
+        char* out_object_id);
 
 /** represents chunk data */
 typedef struct kii_chunk_data_t {

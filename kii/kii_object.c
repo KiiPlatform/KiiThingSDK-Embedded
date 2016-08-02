@@ -429,6 +429,29 @@ exit:
     return ret;
 }
 
+int kii_object_upload_at_once_with_reader(
+        kii_t* kii,
+        void* add_reader_context,
+        const kii_bucket_t* bucket,
+        kii_readers_t* readers,
+        char* out_object_id)
+{
+    // TODO: implement me.
+    return 0;
+}
+
+
+int kii_object_upload_with_reader(
+        kii_t* kii,
+        void* add_reader_context,
+        const kii_bucket_t* bucket,
+        kii_readers_t* readers,
+        char* out_object_id)
+{
+    // TODO: implement me.
+    return 0;
+}
+
 int kii_object_commit_upload(
         kii_t* kii,
         const kii_bucket_t* bucket,
