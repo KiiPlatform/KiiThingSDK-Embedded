@@ -429,29 +429,6 @@ exit:
     return ret;
 }
 
-int kii_object_upload_at_once_with_reader(
-        kii_t* kii,
-        void* add_reader_context,
-        const kii_bucket_t* bucket,
-        kii_readers_t* readers,
-        char* out_object_id)
-{
-    // TODO: implement me.
-    return 0;
-}
-
-
-int kii_object_upload_with_reader(
-        kii_t* kii,
-        void* add_reader_context,
-        const kii_bucket_t* bucket,
-        kii_readers_t* readers,
-        char* out_object_id)
-{
-    // TODO: implement me.
-    return 0;
-}
-
 int kii_object_commit_upload(
         kii_t* kii,
         const kii_bucket_t* bucket,
@@ -510,6 +487,30 @@ int kii_object_commit_upload(
     ret = 0;
 exit:
     return ret;
+}
+
+int kii_object_upload_body_at_once_with_reader(
+        kii_t* kii,
+        void* add_reader_context,
+        const kii_bucket_t* bucket,
+        const char* object_id,
+        const char* body_content_type,
+        kii_readers_t* readers)
+{
+    // TODO: implement me.
+    return 0;
+}
+
+int kii_object_upload_body_with_reader(
+        kii_t* kii,
+        void* add_reader_context,
+        const kii_bucket_t* bucket,
+        const char* object_id,
+        kii_readers_t* readers,
+        size_t* out_sent_size)
+{
+    // TODO: implement me.
+    return 0;
 }
 
 int kii_object_download_body_at_once(
