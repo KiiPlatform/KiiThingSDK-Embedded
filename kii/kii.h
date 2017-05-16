@@ -111,6 +111,21 @@ typedef struct kii_t {
 
 } kii_t;
 
+typedef kii_bool_t (*KII_READER_OPEN_CB)(kii_t* kii, void* app_reader_context);
+typedef kii_bool_t (*KII_READER_READ_CB)(
+            kii_t* kii,
+            void* app_reader_context,
+            void* buff,
+            size_t buff_size,
+            size_t* out_size);
+typedef kii_bool_t (*KII_READER_CLOSE_CB)(kii_t* kii, void* app_reader_context);
+
+typedef struct kii_readers_t {
+    KII_READER_OPEN_CB open;
+    KII_READER_READ_CB read;
+    KII_READER_CLOSE_CB close;
+} kii_readers_t;
+
 /** Initializes Kii SDK
  *  \param [inout] kii sdk instance.
  *  \param [in] site the input of site name,
@@ -333,6 +348,22 @@ int kii_object_commit_upload(
 		const char* object_id,
 		const char* upload_id,
 		unsigned int commit);
+
+int kii_object_upload_body_at_once_with_reader(
+        kii_t* kii,
+        void* add_reader_context,
+        const kii_bucket_t* bucket,
+        const char* object_id,
+        const char* body_content_type,
+        kii_readers_t* readers);
+
+int kii_object_upload_body_with_reader(
+        kii_t* kii,
+        void* add_reader_context,
+        const kii_bucket_t* bucket,
+        const char* object_id,
+        kii_readers_t* readers,
+        size_t* out_sent_size);
 
 /** Download object body at one time.
  *  If the data size is large or unknown, consider use kii_object_download_body()
