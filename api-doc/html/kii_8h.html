@@ -690,7 +690,8 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Download object body chunk by chunk. Downloaded data is cached in kii_core_t::response_body after the download chunk is succeeded. </p>
+<p>Download object body chunk by chunk. Downloaded data is cached in kii_core_t::response_body after the download chunk is succeeded.</p>
+<p>IMPORTANT: This API uses Range request which is defined in HTTP 1.1. You may need to turn on KII_USE_CUSTOM_ HTTP_CLIENT and switch the client implementation since the reference client is HTTP 1.0. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">kii</td><td>sdk instance. </td></tr>
@@ -1459,7 +1460,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue May 16 2017 09:06:28 for Kii Thing SDK Embedded by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 8 2018 10:15:01 for Kii Thing SDK Embedded by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>

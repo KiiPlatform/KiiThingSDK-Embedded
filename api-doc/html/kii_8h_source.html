@@ -255,75 +255,75 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* object_id,</div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>* out_data_length);</div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a52b9e3be93b338a52feb5dec12d8b26d">kii_object_download_body</a>(</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;        <span class="keyword">const</span> kii_bucket_t* bucket,</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* object_id,</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> position,</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> length,</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>* out_actual_length,</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>* out_total_length);</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a205337e7fb0718de25231d04eaf36b00">kii_push_subscribe_bucket</a>(</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;        <span class="keyword">const</span> kii_bucket_t* bucket);</div>
-<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;</div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a60aca4fc44225dc0add11b62405ac004">kii_push_unsubscribe_bucket</a>(</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;        <span class="keyword">const</span> kii_bucket_t* bucket);</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#ad3956083ab1171a0258cb8704f53ac79">kii_push_subscribe_topic</a>(</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;        <span class="keyword">const</span> kii_topic_t* topic);</div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a56401ee55347a9c2f906acec1546d39a">kii_push_unsubscribe_topic</a>(</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;        <span class="keyword">const</span> kii_topic_t* topic);</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a012391ae4fc84340eaae60c55d2ebc07">kii_push_create_topic</a>(</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;        <span class="keyword">const</span> kii_topic_t* topic);</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#aa1515c3289624ba951468132a08cfb98">kii_push_delete_topic</a>(</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;        <span class="keyword">const</span> kii_topic_t* topic);</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a5fd393fe391669508f76f6fb5f68a3f2">kii_push_start_routine</a>(</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;        KII_PUSH_RECEIVED_CB callback);</div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;</div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#ad33ef785d297fa9b8770e74e46bf78ec">kii_server_code_execute</a>(</div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* endpoint_name,</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* params);</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;</div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a781d6b68a82ec3fcde6a1d33186d8c6f">kii_api_call_start</a>(</div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* http_method,</div>
-<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* resource_path,</div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* content_type,</div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;        kii_bool_t set_authentication_header);</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;</div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#aa3808415ecb3ea8a5aa3e97ebe98bc51">kii_api_call_append_body</a>(</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">void</span>* body_data,</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;        <span class="keywordtype">size_t</span> body_size);</div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;</div>
-<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;<span class="keywordtype">int</span></div>
-<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;<a class="code" href="kii_8h.html#aa3da55c23f4ff7935f926cb9eebdb1f9">kii_api_call_append_header</a>(</div>
-<div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
-<div class="line"><a name="l00509"></a><span class="lineno">  509</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* key,</div>
-<div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* value);</div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;</div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#ac62f7cededcaf8ae922ac7fe0b8995ca">kii_api_call_run</a>(<a class="code" href="structkii__t.html">kii_t</a>* kii);</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;</div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="preprocessor"></span>}</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;<span class="preprocessor"></span></div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;<span class="preprocessor"></span><span class="comment">/* vim:set ts=4 sts=4 sw=4 et fenc=UTF-8 ff=unix: */</span></div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a52b9e3be93b338a52feb5dec12d8b26d">kii_object_download_body</a>(</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;        <span class="keyword">const</span> kii_bucket_t* bucket,</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* object_id,</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> position,</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> length,</div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>* out_actual_length,</div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;        <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>* out_total_length);</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a205337e7fb0718de25231d04eaf36b00">kii_push_subscribe_bucket</a>(</div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;        <span class="keyword">const</span> kii_bucket_t* bucket);</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a60aca4fc44225dc0add11b62405ac004">kii_push_unsubscribe_bucket</a>(</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;        <span class="keyword">const</span> kii_bucket_t* bucket);</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#ad3956083ab1171a0258cb8704f53ac79">kii_push_subscribe_topic</a>(</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;        <span class="keyword">const</span> kii_topic_t* topic);</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a56401ee55347a9c2f906acec1546d39a">kii_push_unsubscribe_topic</a>(</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;        <span class="keyword">const</span> kii_topic_t* topic);</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a012391ae4fc84340eaae60c55d2ebc07">kii_push_create_topic</a>(</div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;        <span class="keyword">const</span> kii_topic_t* topic);</div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#aa1515c3289624ba951468132a08cfb98">kii_push_delete_topic</a>(</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;        <span class="keyword">const</span> kii_topic_t* topic);</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a5fd393fe391669508f76f6fb5f68a3f2">kii_push_start_routine</a>(</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;        KII_PUSH_RECEIVED_CB callback);</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#ad33ef785d297fa9b8770e74e46bf78ec">kii_server_code_execute</a>(</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* endpoint_name,</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* params);</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#a781d6b68a82ec3fcde6a1d33186d8c6f">kii_api_call_start</a>(</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* http_method,</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* resource_path,</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* content_type,</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;        kii_bool_t set_authentication_header);</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#aa3808415ecb3ea8a5aa3e97ebe98bc51">kii_api_call_append_body</a>(</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">void</span>* body_data,</div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;        <span class="keywordtype">size_t</span> body_size);</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;<span class="keywordtype">int</span></div>
+<div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;<a class="code" href="kii_8h.html#aa3da55c23f4ff7935f926cb9eebdb1f9">kii_api_call_append_header</a>(</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        <a class="code" href="structkii__t.html">kii_t</a>* kii,</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* key,</div>
+<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;        <span class="keyword">const</span> <span class="keywordtype">char</span>* value);</div>
+<div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;<span class="keywordtype">int</span> <a class="code" href="kii_8h.html#ac62f7cededcaf8ae922ac7fe0b8995ca">kii_api_call_run</a>(<a class="code" href="structkii__t.html">kii_t</a>* kii);</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="preprocessor"></span>}</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;<span class="preprocessor"></span></div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;<span class="preprocessor"></span><span class="comment">/* vim:set ts=4 sts=4 sw=4 et fenc=UTF-8 ff=unix: */</span></div>
+<div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160;</div>
 <div class="ttc" id="kii_8h_html_ac62f7cededcaf8ae922ac7fe0b8995ca"><div class="ttname"><a href="kii_8h.html#ac62f7cededcaf8ae922ac7fe0b8995ca">kii_api_call_run</a></div><div class="ttdeci">int kii_api_call_run(kii_t *kii)</div><div class="ttdef"><b>Definition:</b> kii_call.c:31</div></div>
 <div class="ttc" id="kii_8h_html_a2e22777f0e748d34bb0521c8f1968c0d"><div class="ttname"><a href="kii_8h.html#a2e22777f0e748d34bb0521c8f1968c0d">kii_thing_authenticate</a></div><div class="ttdeci">int kii_thing_authenticate(kii_t *kii, const char *vendor_thing_id, const char *password)</div><div class="ttdef"><b>Definition:</b> kii_thing.c:34</div></div>
 <div class="ttc" id="kii_8h_html_a5fd393fe391669508f76f6fb5f68a3f2"><div class="ttname"><a href="kii_8h.html#a5fd393fe391669508f76f6fb5f68a3f2">kii_push_start_routine</a></div><div class="ttdeci">int kii_push_start_routine(kii_t *kii, KII_PUSH_RECEIVED_CB callback)</div><div class="ttdef"><b>Definition:</b> kii_push.c:541</div></div>
@@ -358,14 +358,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="ttc" id="kii_8h_html_ad3956083ab1171a0258cb8704f53ac79"><div class="ttname"><a href="kii_8h.html#ad3956083ab1171a0258cb8704f53ac79">kii_push_subscribe_topic</a></div><div class="ttdeci">int kii_push_subscribe_topic(kii_t *kii, const kii_topic_t *topic)</div><div class="ttdef"><b>Definition:</b> kii_push.c:218</div></div>
 <div class="ttc" id="kii_8h_html_a4694d4cc5d612d2965afcf48626291e4"><div class="ttname"><a href="kii_8h.html#a4694d4cc5d612d2965afcf48626291e4">kii_object_commit_upload</a></div><div class="ttdeci">int kii_object_commit_upload(kii_t *kii, const kii_bucket_t *bucket, const char *object_id, const char *upload_id, unsigned int commit)</div><div class="ttdef"><b>Definition:</b> kii_object.c:432</div></div>
 <div class="ttc" id="structkii__t_html_a84ec9b5cba3fe59e956343496ebbf217"><div class="ttname"><a href="structkii__t.html#a84ec9b5cba3fe59e956343496ebbf217">kii_t::kii_json_resource_cb</a></div><div class="ttdeci">KII_JSON_RESOURCE_CB kii_json_resource_cb</div><div class="ttdef"><b>Definition:</b> kii.h:110</div></div>
-<div class="ttc" id="kii_8h_html_a52b9e3be93b338a52feb5dec12d8b26d"><div class="ttname"><a href="kii_8h.html#a52b9e3be93b338a52feb5dec12d8b26d">kii_object_download_body</a></div><div class="ttdeci">int kii_object_download_body(kii_t *kii, const kii_bucket_t *bucket, const char *object_id, unsigned int position, unsigned int length, unsigned int *out_actual_length, unsigned int *out_total_length)</div><div class="ttdef"><b>Definition:</b> kii_object.c:553</div></div>
+<div class="ttc" id="kii_8h_html_a52b9e3be93b338a52feb5dec12d8b26d"><div class="ttname"><a href="kii_8h.html#a52b9e3be93b338a52feb5dec12d8b26d">kii_object_download_body</a></div><div class="ttdeci">int kii_object_download_body(kii_t *kii, const kii_bucket_t *bucket, const char *object_id, unsigned int position, unsigned int length, unsigned int *out_actual_length, unsigned int *out_total_length)</div><div class="ttdef"><b>Definition:</b> kii_object.c:545</div></div>
 <div class="ttc" id="kii_8h_html_ad33ef785d297fa9b8770e74e46bf78ec"><div class="ttname"><a href="kii_8h.html#ad33ef785d297fa9b8770e74e46bf78ec">kii_server_code_execute</a></div><div class="ttdeci">int kii_server_code_execute(kii_t *kii, const char *endpoint_name, const char *params)</div><div class="ttdef"><b>Definition:</b> kii_server_code.c:9</div></div>
 <div class="ttc" id="kii_8h_html_a8a01da7c5d9aad124e4bd746ff5a4275"><div class="ttname"><a href="kii_8h.html#a8a01da7c5d9aad124e4bd746ff5a4275">kii_object_init_upload_body</a></div><div class="ttdeci">int kii_object_init_upload_body(kii_t *kii, const kii_bucket_t *bucket, const char *object_id, char *out_upload_id)</div><div class="ttdef"><b>Definition:</b> kii_object.c:294</div></div>
 <div class="ttc" id="structkii__chunk__data__t_html_a6dc10587fe1863a17b93252d5bb3b958"><div class="ttname"><a href="structkii__chunk__data__t.html#a6dc10587fe1863a17b93252d5bb3b958">kii_chunk_data_t::body_content_type</a></div><div class="ttdeci">char * body_content_type</div><div class="ttdef"><b>Definition:</b> kii.h:289</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue May 16 2017 09:06:28 for Kii Thing SDK Embedded by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Thu Feb 8 2018 10:15:01 for Kii Thing SDK Embedded by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.6
 </small></address>
