@@ -542,6 +542,15 @@ exit:
     return ret;
 }
 
+int kii_object_download_body_at_once_to_file(
+		kii_t* kii,
+		const kii_bucket_t* bucket,
+		const char* object_id)
+{
+    // TODO: Implement it.
+    return 0;
+}
+
 int kii_object_download_body(
         kii_t* kii,
         const kii_bucket_t* bucket,

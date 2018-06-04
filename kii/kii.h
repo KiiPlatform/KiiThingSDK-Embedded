@@ -7,7 +7,6 @@
 
 #include "kii_core.h"
 #include "kii_task_callback.h"
-#include "kii_file_callback.h"
 
 #include <kii_json.h>
 
@@ -74,10 +73,6 @@ typedef struct kii_t {
     KII_DELAY_MS delay_ms_cb;
 
     KII_PUSH_RECEIVED_CB push_received_cb;
-
-		KII_FILE_OPEN_CB file_open_cb;
-		KII_FILE_WRITE_CB file_write_cb;
-		KII_FILE_CLOSE_CB file_close_cb;
 
     int _mqtt_connected;
 
