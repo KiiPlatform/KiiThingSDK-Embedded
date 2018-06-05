@@ -653,7 +653,7 @@ prv_http_request_line_and_headers(
         result = prv_kii_http_set_header(
                 kii,
                 "if-match",
-                etag 
+                etag
                 );
         if (result != KII_HTTPC_OK) {
             M_KII_LOG(M_REQUEST_LINE_CB_FAILED);

@@ -109,6 +109,10 @@ typedef struct kii_t {
      */
     KII_JSON_RESOURCE_CB kii_json_resource_cb;
 
+	KII_FILE_OPEN_CB kii_file_open_cb;
+	KII_FILE_WRITE_CB kii_file_write_cb;
+	KII_FILE_CLOSE_CB kii_file_close_cb;
+
 } kii_t;
 
 /** Initializes Kii SDK
@@ -444,7 +448,7 @@ int kii_push_delete_topic(
  *  After succeeded, callback is called when push message is delivered to this
  *  thing.
  *  \param [inout] kii sdk instance.
- *  \param [in] callback  callback function called when push message delivered. 
+ *  \param [in] callback  callback function called when push message delivered.
  *  \return 0:success, -1: failure
  */
 int kii_push_start_routine(
