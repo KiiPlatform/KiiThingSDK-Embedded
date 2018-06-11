@@ -7,6 +7,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 void received_callback(kii_t* kii, char* buffer, size_t buffer_size) {
     char copy[1024];
@@ -14,6 +17,32 @@ void received_callback(kii_t* kii, char* buffer, size_t buffer_size) {
     strncpy(copy, buffer, sizeof(copy));
     printf("buffer_size: %lu\n", buffer_size);
     printf("recieve message: %s\n", copy);
+}
+
+int fd;
+kii_file_code_t open_file(void) {
+    fd = open(EX_FILE_TO_SAVE, O_WRONLY | O_CREAT | O_EXCL);
+    if (fd != -1) {
+        return KII_FILE_OK;
+    }else {
+        return KII_FILE_FAIL;
+    }
+}
+
+kii_file_code_t write_file(const char* buf, const size_t length) {
+    if (write(fd, buf, length) != -1) {
+        return KII_FILE_OK;
+    }else {
+        return KII_FILE_FAIL;
+    }
+}
+
+kii_file_code_t close_file(void) {
+    if (close(fd) != -1) {
+        return KII_FILE_OK;
+    }else {
+        return KII_FILE_FAIL;
+    }
 }
 
 int main(int argc, char** argv)
@@ -68,6 +97,10 @@ int main(int argc, char** argv)
     topic.scope_id = scope_id;
     topic.topic_name = (char*)EX_TOPIC_NAME;
 
+    kii.kii_file_open_cb = open_file;
+    kii.kii_file_write_cb = write_file;
+    kii.kii_file_close_cb = close_file;
+
     while (1) {
         int option_index = 0;
         static struct option long_options[] = {
@@ -91,6 +124,7 @@ int main(int argc, char** argv)
             {"unsubscribe-topic", no_argument, NULL, 17},
             {"push", no_argument, NULL,  18},
             {"server-code-execute", no_argument, NULL,  19},
+            {"download-body-to-file-o", no_argument, NULL, 20},
             {"help", no_argument, NULL, 1000},
             {0, 0, 0, 0}
         };
@@ -103,7 +137,7 @@ int main(int argc, char** argv)
         switch (optval) {
             case 0:
                 printf("register thing\n");
-                ret = kii_thing_register(&kii, EX_AUTH_VENDOR_ID, 
+                ret = kii_thing_register(&kii, EX_AUTH_VENDOR_ID,
                         EX_AUTH_VENDOR_TYPE, EX_AUTH_VENDOR_PASS);
                 if(ret == 0) {
                     printf("success!\n");
@@ -178,7 +212,7 @@ int main(int argc, char** argv)
             case 8:
                 printf("upload body in multiple peces\n");
                 memset(upload_id, 0x00, sizeof(upload_id));
-                ret = kii_object_init_upload_body(&kii, &bucket, EX_OBJECT_ID, upload_id); 
+                ret = kii_object_init_upload_body(&kii, &bucket, EX_OBJECT_ID, upload_id);
                 if (ret != 0) {
                     printf("failed!\n");
                     break;
@@ -215,7 +249,7 @@ int main(int argc, char** argv)
                 break;
             case 10:
                 printf("download body in multiple peces\n");
-                ret = kii_object_download_body(&kii, &bucket, EX_OBJECT_ID, 0, 
+                ret = kii_object_download_body(&kii, &bucket, EX_OBJECT_ID, 0,
                         strlen(EX_BODY_DATA), &actual_length, &total_length);
                 if(ret == 0) {
                     printf("success!\n");
@@ -296,6 +330,15 @@ int main(int argc, char** argv)
             case 19:
                 printf("Server code execute\n");
                 ret = kii_server_code_execute(&kii, EX_ENDPOINT_NAME, NULL);
+                if(ret == 0) {
+                    printf("success!\n");
+                } else {
+                    printf("failed!\n");
+                }
+                break;
+            case 20:
+                printf("download body at once to file\n");
+                ret = kii_object_download_body_at_once_to_file(&kii, &bucket, EX_OBJECT_ID);
                 if(ret == 0) {
                     printf("success!\n");
                 } else {

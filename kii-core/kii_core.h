@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stddef.h>
 #include "kii_socket_callback.h"
+#include "kii_file_callback.h"
 
 #ifndef KII_USE_CUSTOM_HTTP_CLIENT
 
@@ -192,6 +193,10 @@ typedef struct kii_http_context_t
      * defined.
      */
     KII_SOCKET_CLOSE_CB close_cb;
+
+    KII_FILE_OPEN_CB file_open_cb;
+    KII_FILE_WRITE_CB file_write_cb;
+    KII_FILE_CLOSE_CB file_close_cb;
 
 #endif
 } kii_http_context_t;
