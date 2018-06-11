@@ -213,17 +213,37 @@ prv_kii_http_execute(kii_core_t* kii)
             char* separator = NULL;
             unsigned long content_length = 0;
             size_t actualLength = 0;
+            kii_file_code_t file_result = KII_FILE_FAIL;
+            char file_write_buff[KII_SOCKET_MAX_BUFF_SIZE];
+            char* recv_buffer;
             size_t size =
                 http_context->buffer_size - http_context->_received_size;
             if (size > KII_SOCKET_MAX_BUFF_SIZE) {
                 size = KII_SOCKET_MAX_BUFF_SIZE;
             }
             if (http_context->_received_size == 0) {
+                if (http_context->download_to_file) {
+                    file_result = http_context->file_open_cb();
+                    if (file_result != KII_FILE_OK) {
+                        return KII_HTTPC_FAIL;
+                    }
+                }
                 memset(http_context->buffer, 0x00, http_context->buffer_size);
             }
 
+            
+            if (http_context->download_to_file) {
+                if (http_context->_content_length_scanned) {
+                    /* All headers are read. */
+                    recv_buffer = file_write_buff;
+                } else {
+                    recv_buffer = http_context->buffer + http_context->_received_size;
+                }
+            } else {
+                recv_buffer = http_context->buffer + http_context->_received_size;
+            }
             switch (http_context->recv_cb(&(http_context->socket_context),
-                            http_context->buffer + http_context->_received_size,
+                            recv_buffer,
                             size, &actualLength)) {
                 case KII_SOCKETC_OK:
                     http_context->_received_size += actualLength;
@@ -233,6 +253,14 @@ prv_kii_http_execute(kii_core_t* kii)
                         http_context->socket_context.http_error =
                             KII_HTTP_ERROR_INSUFFICIENT_BUFFER;
                         return KII_HTTPC_FAIL;
+                    }
+                    if (http_context->download_to_file) {
+                        file_result = http_context->file_write_cb(recv_buffer, actualLength);
+                        if (file_result != KII_FILE_OK) {
+                            // Ignore file close failure.
+                            http_context->file_close_cb();
+                            return KII_HTTPC_FAIL;
+                        }
                     }
                     if (http_context->_content_length_scanned != 1) {
                         buffer = http_context->buffer;
@@ -264,6 +292,10 @@ prv_kii_http_execute(kii_core_t* kii)
                             '\0';
                         http_context->_socket_state =
                             PRV_KII_SOCKET_STATE_CLOSE;
+                    }
+                    if (http_context->_socket_state == PRV_KII_SOCKET_STATE_CLOSE && http_context->download_to_file) {
+                        // Ignore file close failure.
+                        http_context->file_close_cb();
                     }
                     return KII_HTTPC_AGAIN;
                 case KII_SOCKETC_AGAIN:
@@ -308,12 +340,14 @@ prv_kii_http_execute(kii_core_t* kii)
                                 (pointer[i] - '0');
                     }
 
-                    /* set body pointer */
-                    kii->response_body =
-                        strstr(http_context->buffer, END_OF_HEADER);
-                    if (kii->response_body != NULL) {
-                        kii->response_body += CONST_LEN(END_OF_HEADER);
-                        kii->_response_body_length = http_context->_received_size - (kii->response_body - http_context->buffer);
+                    if (!http_context->download_to_file) {
+                        /* set body pointer */
+                        kii->response_body =
+                            strstr(http_context->buffer, END_OF_HEADER);
+                        if (kii->response_body != NULL) {
+                            kii->response_body += CONST_LEN(END_OF_HEADER);
+                            kii->_response_body_length = http_context->_received_size - (kii->response_body - http_context->buffer);
+                        }
                     }
                     http_context->_socket_state = PRV_KII_SOCKET_STATE_IDLE;
                     return KII_HTTPC_OK;
