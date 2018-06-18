@@ -129,6 +129,7 @@ typedef struct kii_http_context_t
      */
     size_t _received_size;
 
+    size_t _prev_write_file_pos;
     /** This is a private field for this SDK.
      * Application programmers must not use this field.
      *

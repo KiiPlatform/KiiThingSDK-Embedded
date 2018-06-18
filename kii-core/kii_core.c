@@ -161,6 +161,7 @@ prv_kii_http_execute(kii_core_t* kii)
                             http_context->host, KII_SERVER_PORT)) {
                 case KII_SOCKETC_OK:
                     http_context->_socket_state = PRV_KII_SOCKET_STATE_SEND;
+                    http_context->_prev_write_file_pos = 0;
                     return KII_HTTPC_AGAIN;
                 case KII_SOCKETC_AGAIN:
                     return KII_HTTPC_AGAIN;
@@ -214,7 +215,6 @@ prv_kii_http_execute(kii_core_t* kii)
             unsigned long content_length = 0;
             size_t actualLength = 0;
             kii_file_code_t file_result = KII_FILE_FAIL;
-            char file_write_buff[KII_SOCKET_MAX_BUFF_SIZE];
             char* recv_buffer;
             size_t size =
                 http_context->buffer_size - http_context->_received_size;
@@ -231,17 +231,7 @@ prv_kii_http_execute(kii_core_t* kii)
                 memset(http_context->buffer, 0x00, http_context->buffer_size);
             }
 
-            
-            if (http_context->download_to_file) {
-                if (http_context->_content_length_scanned) {
-                    /* All headers are read. */
-                    recv_buffer = file_write_buff;
-                } else {
-                    recv_buffer = http_context->buffer + http_context->_received_size;
-                }
-            } else {
-                recv_buffer = http_context->buffer + http_context->_received_size;
-            }
+            recv_buffer = http_context->buffer + http_context->_received_size;
             switch (http_context->recv_cb(&(http_context->socket_context),
                             recv_buffer,
                             size, &actualLength)) {
@@ -254,7 +244,7 @@ prv_kii_http_execute(kii_core_t* kii)
                             KII_HTTP_ERROR_INSUFFICIENT_BUFFER;
                         return KII_HTTPC_FAIL;
                     }
-                    if (http_context->download_to_file) {
+                    if (http_context->download_to_file && http_context->_content_length_scanned) {
                         file_result = http_context->file_write_cb(recv_buffer, actualLength);
                         if (file_result != KII_FILE_OK) {
                             // Ignore file close failure.
@@ -270,12 +260,32 @@ prv_kii_http_execute(kii_core_t* kii)
                             http_context->_content_length_scanned = 1;
                         }
                         if (content_length > 0) {
+                            size_t body_read = http_context->_received_size > (separator - buffer + 4)
                             M_KII_LOG_FORMAT(
                                     kii->logger_cb("content-length: %ld\n",
                                         content_length));
                             http_context->_response_length =
                                 (separator - buffer) + 4 + content_length;
+                            if (body_read > 0 && http_context->download_to_file) {
+                                file_result = http_context->file_write_cb(separator + 4, body_read);
+                                if (file_result != KII_FILE_OK) {
+                                    // Ignore file close failure.
+                                    http_context->file_close_cb();
+                                    return KII_HTTPC_FAIL;
+                                }
+                                http_context->_prev_write_file_pos = separator + 4 + body_read;
+                            }
                         }
+                    } else {
+                        size_t body_read = http_context->_response_length - (http_context->_prev_write_file_pos + 1);
+
+                        file_result = http_context->file_write_cb(http_context->_prev_write_file_pos + 1, body_read);
+                        if (file_result != KII_FILE_OK) {
+                            // Ignore file close failure.
+                            http_context->file_close_cb();
+                            return KII_HTTPC_FAIL;
+                        }
+                        http_context->_prev_write_file_pos = http_context->_prev_write_file_pos + body_read;
                     }
                     if (http_context->_response_length > 0 &&
                             http_context->_received_size >=
