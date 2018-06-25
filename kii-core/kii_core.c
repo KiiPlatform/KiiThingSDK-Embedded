@@ -260,7 +260,7 @@ prv_kii_http_execute(kii_core_t* kii)
                             http_context->_content_length_scanned = 1;
                         }
                         if (content_length > 0) {
-                            size_t body_read = http_context->_received_size > (separator - buffer + 4)
+                            size_t body_read = http_context->_received_size - (separator - buffer + 4)
                             M_KII_LOG_FORMAT(
                                     kii->logger_cb("content-length: %ld\n",
                                         content_length));
