@@ -273,19 +273,19 @@ prv_kii_http_execute(kii_core_t* kii)
                                     http_context->file_close_cb();
                                     return KII_HTTPC_FAIL;
                                 }
-                                http_context->_prev_write_file_pos = separator + 4 + body_read;
+                                http_context->_prev_write_file_pos += body_read;
                             }
                         }
                     } else {
-                        size_t body_read = http_context->_response_length - (http_context->_prev_write_file_pos + 1);
-
-                        file_result = http_context->file_write_cb(http_context->_prev_write_file_pos + 1, body_read);
+                        size_t body_read = http_context->_received_size - (separator - buffer + 4 + http_context->_prev_write_file_pos);
+                        void* start_pos = separator + 4 + http_context->_prev_write_file_pos;
+                        file_result = http_context->file_write_cb(start_pos, body_read);
                         if (file_result != KII_FILE_OK) {
                             // Ignore file close failure.
                             http_context->file_close_cb();
                             return KII_HTTPC_FAIL;
                         }
-                        http_context->_prev_write_file_pos = http_context->_prev_write_file_pos + body_read;
+                        http_context->_prev_write_file_pos += body_read;
                     }
                     if (http_context->_response_length > 0 &&
                             http_context->_received_size >=
