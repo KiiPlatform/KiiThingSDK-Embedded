@@ -24,6 +24,8 @@ const char EX_OBJECT_DATA[] = "{}";
 const char EX_BODY_DATA[] = "Hello world !\n";
 const char EX_ENDPOINT_NAME[] = "test_topic";
 
+const char EX_OBJECT_BODY_FILE_NAME[] = "my_object_body.txt";
+
 #ifdef __cplusplus
 }
 #endif
