@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
+#include "kii_file_impl.h"
 
 void received_callback(kii_t* kii, char* buffer, size_t buffer_size) {
     char copy[1024];
@@ -305,6 +306,9 @@ int main(int argc, char** argv)
                 break;
             case 20:
                 printf("download body at once to file\n");
+                kii.kii_core.http_context.file_open_cb = kii_file_open;
+                kii.kii_core.http_context.file_write_cb = kii_file_write;
+                kii.kii_core.http_context.file_close_cb = kii_file_close;
                 ret = kii_object_download_body_at_once_to_file(&kii, &bucket, EX_OBJECT_ID);
                 if(ret == 0) {
                     printf("success!\n");
