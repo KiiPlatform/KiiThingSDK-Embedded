@@ -1,9 +1,9 @@
 #include "kii_file_impl.h"
-#include "example.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include "example.h"
 
 int fd = -1;
 

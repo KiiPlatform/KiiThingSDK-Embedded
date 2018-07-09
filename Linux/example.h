@@ -4,27 +4,27 @@
 #ifdef __cplusplus
 extern 'C' {
 #endif
-const char EX_AUTH_VENDOR_ID[] = "4649";
-const char EX_AUTH_VENDOR_PASS[] = "1234";
-const char EX_AUTH_VENDOR_TYPE[] = "my_type";
+extern const char EX_AUTH_VENDOR_ID[];
+extern const char EX_AUTH_VENDOR_PASS[];
+extern const char EX_AUTH_VENDOR_TYPE[];
 
-const char EX_APP_SITE[] = "JP";
-const char EX_APP_ID[] = "9ab34d8b";
-const char EX_APP_KEY[] = "7a950d78956ed39f3b0815f0f001b43b";
+extern const char EX_APP_SITE[];
+extern const char EX_APP_ID[];
+extern const char EX_APP_KEY[];
 
 #define EX_BUFFER_SIZE 4096
 #define EX_MQTT_BUFFER_SIZE 2048
 
-const char EX_THING_ID[] = "th.396587a00022-51e9-4e11-5eec-07846c59";
-const char EX_ACCESS_TOKEN[] = "PlRI8O54j74Og7OtRnYLHu-ftQYINQwgDRuyhi3rGlQ";
-const char EX_OBJECT_ID[] = "my_object";
-const char EX_BUCKET_NAME[] = "my_bucket";
-const char EX_TOPIC_NAME[] = "my_topic";
-const char EX_OBJECT_DATA[] = "{}";
-const char EX_BODY_DATA[] = "Hello world !\n";
-const char EX_ENDPOINT_NAME[] = "test_topic";
+extern const char EX_THING_ID[];
+extern const char EX_ACCESS_TOKEN[];
+extern const char EX_OBJECT_ID[];
+extern const char EX_BUCKET_NAME[];
+extern const char EX_TOPIC_NAME[];
+extern const char EX_OBJECT_DATA[];
+extern const char EX_BODY_DATA[];
+extern const char EX_ENDPOINT_NAME[];
 
-const char EX_OBJECT_BODY_FILE_NAME[] = "my_object_body.txt";
+extern const char EX_OBJECT_BODY_FILE_NAME[];
 
 #ifdef __cplusplus
 }
