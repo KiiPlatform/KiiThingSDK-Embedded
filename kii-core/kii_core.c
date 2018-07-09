@@ -247,7 +247,7 @@ prv_kii_http_execute(kii_core_t* kii)
                     if (http_context->download_to_file && http_context->_content_length_scanned) {
                         file_result = http_context->file_write_cb(recv_buffer, actualLength);
                         if (file_result != KII_FILE_OK) {
-                            // Ignore file close failure.
+                            /* Ignore file close failure.*/
                             http_context->file_close_cb();
                             return KII_HTTPC_FAIL;
                         }
@@ -260,7 +260,7 @@ prv_kii_http_execute(kii_core_t* kii)
                             http_context->_content_length_scanned = 1;
                         }
                         if (content_length > 0) {
-                            size_t body_read = http_context->_received_size - (separator - buffer + 4)
+                            size_t body_read = http_context->_received_size - (separator - buffer + 4);
                             M_KII_LOG_FORMAT(
                                     kii->logger_cb("content-length: %ld\n",
                                         content_length));
@@ -697,7 +697,7 @@ prv_http_request_line_and_headers(
         result = prv_kii_http_set_header(
                 kii,
                 "if-match",
-                etag 
+                etag
                 );
         if (result != KII_HTTPC_OK) {
             M_KII_LOG(M_REQUEST_LINE_CB_FAILED);
