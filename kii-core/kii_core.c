@@ -276,7 +276,7 @@ prv_kii_http_execute(kii_core_t* kii)
                                 http_context->_prev_write_file_pos += body_read;
                             }
                         }
-                    } else {
+                    } else if (http_context->download_to_file) {
                         size_t body_read = http_context->_received_size - (separator - buffer + 4 + http_context->_prev_write_file_pos);
                         void* start_pos = separator + 4 + http_context->_prev_write_file_pos;
                         file_result = http_context->file_write_cb(start_pos, body_read);
