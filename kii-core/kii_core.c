@@ -236,6 +236,8 @@ prv_kii_http_execute(kii_core_t* kii)
                             recv_buffer,
                             size, &actualLength)) {
                 case KII_SOCKETC_OK:
+                    buffer = http_context->buffer;
+                    separator = strstr(buffer, "\r\n\r\n");
                     http_context->_received_size += actualLength;
                     if (http_context->_received_size >=
                             http_context->buffer_size) {
@@ -253,8 +255,6 @@ prv_kii_http_execute(kii_core_t* kii)
                         }
                     }
                     if (http_context->_content_length_scanned != 1) {
-                        buffer = http_context->buffer;
-                        separator = strstr(buffer, "\r\n\r\n");
                         if (separator != NULL) {
                             content_length = kii_parse_content_length(buffer);
                             http_context->_content_length_scanned = 1;
