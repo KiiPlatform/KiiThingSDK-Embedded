@@ -217,7 +217,8 @@ prv_kii_http_execute(kii_core_t* kii)
             kii_file_code_t file_result = KII_FILE_FAIL;
             char* recv_buffer;
             size_t size =
-                http_context->buffer_size - http_context->_received_size;
+                http_context->buffer_size -
+                http_context->_received_size % http_context->buffer_size;
             if (size > KII_SOCKET_MAX_BUFF_SIZE) {
                 size = KII_SOCKET_MAX_BUFF_SIZE;
             }
@@ -231,7 +232,8 @@ prv_kii_http_execute(kii_core_t* kii)
                 memset(http_context->buffer, 0x00, http_context->buffer_size);
             }
 
-            recv_buffer = http_context->buffer + http_context->_received_size;
+            recv_buffer = http_context->buffer +
+                http_context->_received_size % http_context->buffer_size;
             switch (http_context->recv_cb(&(http_context->socket_context),
                             recv_buffer,
                             size, &actualLength)) {
@@ -239,7 +241,8 @@ prv_kii_http_execute(kii_core_t* kii)
                     buffer = http_context->buffer;
                     separator = strstr(buffer, "\r\n\r\n");
                     http_context->_received_size += actualLength;
-                    if (http_context->_received_size >=
+                    if (!http_context->download_to_file &&
+                        http_context->_received_size >=
                             http_context->buffer_size) {
                         M_KII_LOG("buffer is smaller than receiving data.");
                         http_context->socket_context.http_error =
@@ -258,6 +261,30 @@ prv_kii_http_execute(kii_core_t* kii)
                         if (separator != NULL) {
                             content_length = kii_parse_content_length(buffer);
                             http_context->_content_length_scanned = 1;
+                            /* parse status code */
+                            char* pointer = strstr(http_context->buffer, HTTP1_1);
+                            int i = 0;
+                            if (pointer == NULL) {
+                                M_KII_LOG("invalid response.");
+                                http_context->socket_context.http_error =
+                                    KII_HTTP_ERROR_INVALID_RESPONSE;
+                                return KII_HTTPC_FAIL;
+                            }
+
+                            kii->response_code = 0;
+                            pointer += CONST_LEN(HTTP1_1);
+                            /* parse status code. */
+                            for (i = 0; i < 3; ++i) {
+                                if (isdigit((int)pointer[i]) == 0) {
+                                    M_KII_LOG("invalid status code.");
+                                    kii->response_code = 0;
+                                    http_context->socket_context.http_error =
+                                        KII_HTTP_ERROR_INVALID_RESPONSE;
+                                    return KII_HTTPC_FAIL;
+                                }
+                                kii->response_code = (kii->response_code * 10) +
+                                        (pointer[i] - '0');
+                            }
                         }
                         if (content_length > 0) {
                             size_t body_read = http_context->_received_size - (separator - buffer + 4);
@@ -276,22 +303,15 @@ prv_kii_http_execute(kii_core_t* kii)
                                 http_context->_prev_write_file_pos += body_read;
                             }
                         }
-                    } else if (http_context->download_to_file) {
-                        size_t body_read = http_context->_received_size - (separator - buffer + 4 + http_context->_prev_write_file_pos);
-                        void* start_pos = separator + 4 + http_context->_prev_write_file_pos;
-                        file_result = http_context->file_write_cb(start_pos, body_read);
-                        if (file_result != KII_FILE_OK) {
-                            // Ignore file close failure.
-                            http_context->file_close_cb();
-                            return KII_HTTPC_FAIL;
-                        }
-                        http_context->_prev_write_file_pos += body_read;
+
                     }
                     if (http_context->_response_length > 0 &&
                             http_context->_received_size >=
                             http_context->_response_length ) {
-                        http_context->buffer[http_context->_received_size] =
-                            '\0';
+                        if (http_context->download_to_file != 1) {
+                            http_context->buffer[http_context->_received_size] =
+                                '\0';
+                        }
                         http_context->_socket_state =
                             PRV_KII_SOCKET_STATE_CLOSE;
                     } else if (actualLength < size) {
@@ -325,31 +345,6 @@ prv_kii_http_execute(kii_core_t* kii)
             switch (http_context->close_cb(&(http_context->socket_context))) {
                 case KII_HTTPC_OK:
                 {
-                    /* parse status code */
-                    char* pointer = strstr(http_context->buffer, HTTP1_1);
-                    int i = 0;
-                    if (pointer == NULL) {
-                        M_KII_LOG("invalid response.");
-                        http_context->socket_context.http_error =
-                            KII_HTTP_ERROR_INVALID_RESPONSE;
-                        return KII_HTTPC_FAIL;
-                    }
-
-                    kii->response_code = 0;
-                    pointer += CONST_LEN(HTTP1_1);
-                    /* parse status code. */
-                    for (i = 0; i < 3; ++i) {
-                        if (isdigit((int)pointer[i]) == 0) {
-                            M_KII_LOG("invalid status code.");
-                            kii->response_code = 0;
-                            http_context->socket_context.http_error =
-                                KII_HTTP_ERROR_INVALID_RESPONSE;
-                            return KII_HTTPC_FAIL;
-                        }
-                        kii->response_code = (kii->response_code * 10) +
-                                (pointer[i] - '0');
-                    }
-
                     if (!http_context->download_to_file) {
                         /* set body pointer */
                         kii->response_body =
