@@ -314,7 +314,8 @@ prv_kii_http_execute(kii_core_t* kii)
                         }
                         http_context->_socket_state =
                             PRV_KII_SOCKET_STATE_CLOSE;
-                    } else if (actualLength < size) {
+                    } else if ( !http_context->_content_length_scanned
+                        && actualLength < size) {
                         /* If content-length is not present, wait for
                          * Connnection is closed by server.
                          */
