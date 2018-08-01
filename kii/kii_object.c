@@ -137,7 +137,7 @@ int kii_object_patch(
     ret = 0;
 
 exit:
-    return ret;	
+    return ret;
 }
 
 int kii_object_replace(
@@ -174,7 +174,7 @@ int kii_object_replace(
     ret = 0;
 
 exit:
-    return ret;	
+    return ret;
 }
 
 int kii_object_delete(
@@ -296,7 +296,7 @@ int kii_object_init_upload_body(
         const kii_bucket_t* bucket,
         const char* object_id,
         char* out_upload_id)
-{ 
+{
     char* buf = NULL;
     int ret = -1;
     kii_error_code_t core_err;
@@ -537,6 +537,57 @@ int kii_object_download_body_at_once(
         goto exit;
     }
     *out_data_length = kii->kii_core._response_body_length;
+    ret = 0;
+exit:
+    return ret;
+}
+
+int kii_object_download_body_at_once_to_file(
+		kii_t* kii,
+		const kii_bucket_t* bucket,
+		const char* object_id)
+{
+    int ret = -1;
+    kii_error_code_t core_err;
+    kii_state_t state;
+    char resource_path[256];
+
+    memset(resource_path, 0x00, sizeof(resource_path));
+    strcpy(resource_path, "api/apps/");
+    strcat(resource_path, kii->kii_core.app_id);
+    if(bucket->scope == KII_SCOPE_THING) {
+        strcat(resource_path, "/things/");
+        strcat(resource_path, bucket->scope_id);
+    }
+    strcat(resource_path, "/buckets/");
+    strcat(resource_path, bucket->bucket_name);
+    strcat(resource_path, "/objects/");
+    strcat(resource_path, object_id);
+    strcat(resource_path, "/body");
+
+    kii->kii_core.http_context.download_to_file = 1;
+    core_err = kii_core_api_call(
+            &kii->kii_core,
+            "GET",
+            resource_path,
+            NULL,
+            0,
+            NULL,
+            "Accept: */*",
+            (char*)(0));
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    do {
+        core_err = kii_core_run(&kii->kii_core);
+        state = kii_core_get_state(&kii->kii_core);
+    } while (state != KII_STATE_IDLE);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    if(kii->kii_core.response_code < 200 || 300 <= kii->kii_core.response_code) {
+        goto exit;
+    }
     ret = 0;
 exit:
     return ret;

@@ -350,6 +350,12 @@ int kii_object_download_body_at_once(
 		const char* object_id,
 		unsigned int* out_data_length);
 
+
+int kii_object_download_body_at_once_to_file(
+		kii_t* kii,
+		const kii_bucket_t* bucket,
+		const char* object_id);
+
 /** Download object body chunk by chunk.
  *  Downloaded data is cached in kii_core_t#response_body after the download chunk is
  *  succeeded.

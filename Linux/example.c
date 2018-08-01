@@ -7,6 +7,26 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <getopt.h>
+#include "kii_file_impl.h"
+
+const char EX_AUTH_VENDOR_ID[] = "4649";
+const char EX_AUTH_VENDOR_PASS[] = "1234";
+const char EX_AUTH_VENDOR_TYPE[] = "my_type";
+
+const char EX_APP_SITE[] = "JP";
+const char EX_APP_ID[] = "9ab34d8b";
+const char EX_APP_KEY[] = "7a950d78956ed39f3b0815f0f001b43b";
+
+const char EX_THING_ID[] = "th.396587a00022-51e9-4e11-5eec-07846c59";
+const char EX_ACCESS_TOKEN[] = "PlRI8O54j74Og7OtRnYLHu-ftQYINQwgDRuyhi3rGlQ";
+const char EX_OBJECT_ID[] = "my_object";
+const char EX_BUCKET_NAME[] = "my_bucket";
+const char EX_TOPIC_NAME[] = "my_topic";
+const char EX_OBJECT_DATA[] = "{}";
+const char EX_BODY_DATA[] = "Hello world !\n";
+const char EX_ENDPOINT_NAME[] = "test_topic";
+
+const char EX_OBJECT_BODY_FILE_NAME[] = "my_object_body.txt";
 
 void received_callback(kii_t* kii, char* buffer, size_t buffer_size) {
     char copy[1024];
@@ -91,6 +111,7 @@ int main(int argc, char** argv)
             {"unsubscribe-topic", no_argument, NULL, 17},
             {"push", no_argument, NULL,  18},
             {"server-code-execute", no_argument, NULL,  19},
+            {"download-body-f", no_argument, NULL, 20},
             {"help", no_argument, NULL, 1000},
             {0, 0, 0, 0}
         };
@@ -103,7 +124,7 @@ int main(int argc, char** argv)
         switch (optval) {
             case 0:
                 printf("register thing\n");
-                ret = kii_thing_register(&kii, EX_AUTH_VENDOR_ID, 
+                ret = kii_thing_register(&kii, EX_AUTH_VENDOR_ID,
                         EX_AUTH_VENDOR_TYPE, EX_AUTH_VENDOR_PASS);
                 if(ret == 0) {
                     printf("success!\n");
@@ -178,7 +199,7 @@ int main(int argc, char** argv)
             case 8:
                 printf("upload body in multiple peces\n");
                 memset(upload_id, 0x00, sizeof(upload_id));
-                ret = kii_object_init_upload_body(&kii, &bucket, EX_OBJECT_ID, upload_id); 
+                ret = kii_object_init_upload_body(&kii, &bucket, EX_OBJECT_ID, upload_id);
                 if (ret != 0) {
                     printf("failed!\n");
                     break;
@@ -215,7 +236,7 @@ int main(int argc, char** argv)
                 break;
             case 10:
                 printf("download body in multiple peces\n");
-                ret = kii_object_download_body(&kii, &bucket, EX_OBJECT_ID, 0, 
+                ret = kii_object_download_body(&kii, &bucket, EX_OBJECT_ID, 0,
                         strlen(EX_BODY_DATA), &actual_length, &total_length);
                 if(ret == 0) {
                     printf("success!\n");
@@ -296,6 +317,18 @@ int main(int argc, char** argv)
             case 19:
                 printf("Server code execute\n");
                 ret = kii_server_code_execute(&kii, EX_ENDPOINT_NAME, NULL);
+                if(ret == 0) {
+                    printf("success!\n");
+                } else {
+                    printf("failed!\n");
+                }
+                break;
+            case 20:
+                printf("download body at once to file\n");
+                kii.kii_core.http_context.file_open_cb = kii_file_open;
+                kii.kii_core.http_context.file_write_cb = kii_file_write;
+                kii.kii_core.http_context.file_close_cb = kii_file_close;
+                ret = kii_object_download_body_at_once_to_file(&kii, &bucket, EX_OBJECT_ID);
                 if(ret == 0) {
                     printf("success!\n");
                 } else {
