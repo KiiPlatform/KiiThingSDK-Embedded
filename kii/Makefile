@@ -2,12 +2,6 @@ ifdef DEBUG
 	override CFLAGS += -g -DDEBUG
 endif
 
-ifndef KEEP_ALIVE_INTERVAL
-	override CFLAGS += -DKII_PUSH_KEEP_ALIVE_INTERVAL_SECONDS=300
-else
-	override CFLAGS += -DKII_PUSH_KEEP_ALIVE_INTERVAL_SECONDS=$(KEEP_ALIVE_INTERVAL)
-endif
-
 ifdef KII_MQTT_USE_PORT_TCP
 	override CFLAGS += -DKII_MQTT_USE_PORT_TCP=$(KII_MQTT_USE_PORT_TCP)
 endif
@@ -22,15 +16,15 @@ ifdef FLEXIBLE_JSON_TOKEN
 	JSON_FLAG =
 endif
 
-override CFLAGS += -std=gnu89 -Wall -pedantic -pthread -fPIC -shared $(JSON_FLAG)
+override CFLAGS += -std=c99 -Wall -pthread -fPIC -shared $(JSON_FLAG)
 
 LIBS = -lssl -lcrypto -lpthread
 LIBS_DIR = -L/usr/local/opt/openssl/lib
 SOURCES = $(wildcard *.c)
-SOURCES += $(wildcard ../kii-core/*.c)
+SOURCES += $(wildcard ../khc/src/*.c)
 SOURCES += $(wildcard ../kii_json/src/*.c)
 SOURCES += ../lib/jsmn/jsmn.c
-INCLUDES = -I../kii-core -I../lib/jsmn -I../kii_json/include
+INCLUDES = -I../khc/include -I../lib/jsmn -I../kii_json/include
 
 TARGET = libkiisdk.so
 
