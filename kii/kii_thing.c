@@ -8,7 +8,7 @@
 
 #include <kii_core.h>
 
-#define KII_SDK_INFO "sn=te;sv=1.2.4"
+#define KII_SDK_INFO "sn=te;sv=1.2.5"
 
 int _kii_init_with_info(
         kii_t* kii,
