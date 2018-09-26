@@ -1404,15 +1404,12 @@ prv_set_mqtt_endpoint_path(kii_core_t* kii, const char* installation_id)
             kii->app_id,
             installation_id);
 }
-    static void
-prv_set_thing_if_path(
-    kii_core_t* kii,
-    const char* thing_id)
+void prv_set_thing_if_path(kii_core_t* kii, const char* thing_id)
 {
     kii_sprintf(kii->_http_request_path,
-    "thing-if/apps/%s/targets/thing:%s",
-    kii->app_id,
-    thing_id);
+        "thing-if/apps/%s/targets/thing:%s",
+        kii->app_id,
+        thing_id);
 }
     kii_error_code_t
 kii_core_install_thing_push(
