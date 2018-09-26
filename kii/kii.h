@@ -158,7 +158,8 @@ int kii_thing_upload_state(
 		const char* thing_id,
 		const char* thing_state,
 		const char* content_type,
-		const char* encoding);
+		const char* content_encoding,
+		const char* normalizer_host);
 
 /** Create new object
  *  \param [inout] kii sdk instance.

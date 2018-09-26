@@ -158,6 +158,10 @@ prv_kii_http_execute(kii_core_t* kii)
                 KII_HTTP_ERROR_NONE;
             return KII_HTTPC_AGAIN;
         case PRV_KII_SOCKET_STATE_CONNECT:
+            char* host_str = http_context->host;
+            if (http_context->normalizer_host != NULL) {
+                host_str = http_context->normalizer_host;
+            }
             switch (http_context->connect_cb(&(http_context->socket_context),
                             http_context->host, KII_SERVER_PORT)) {
                 case KII_SOCKETC_OK:
@@ -342,10 +346,14 @@ prv_kii_http_execute(kii_core_t* kii)
 prv_kii_http_set_request_line(
         kii_core_t* kii,
         const char* method,
-        const char* resource_path)
+        const char* resource_path,
+        const char* normalizer_host)
 {
     kii_http_context_t* http_context = &(kii->http_context);
     http_context->host = kii->app_host;
+    if (normalizer_host != NULL) {
+        http_context->normalizer_host = normalizer_host;
+    }
 
     memset(http_context->buffer, 0x00, http_context->buffer_size);
 
@@ -356,9 +364,13 @@ prv_kii_http_set_request_line(
         return KII_HTTPC_FAIL;
     }
 
+    char* host_str = kii->app_host;
+    if (normalizer_host != NULL) {
+        host_str = normalizer_host;
+    }
     http_context->total_send_size =
         sprintf(http_context->buffer,
-                "%s https://%s/%s HTTP/1.0\r\n", method, kii->app_host,
+                "%s https://%s/%s HTTP/1.0\r\n", method, host_str,
                 resource_path);
 
     http_context->_body_position =
@@ -602,7 +614,8 @@ prv_http_request_line_and_headers(
         const char* resource_path,
         const char* content_type,
         const char* access_token,
-        const char* etag)
+        const char* etag,
+        const char* host)
 {
     kii_http_client_code_t result;
     result = prv_kii_http_set_request_line(kii, method, resource_path);
@@ -673,16 +686,17 @@ prv_http_request(
         const char* access_token,
         const char* etag,
         const char* body,
-        const char* encoding)
+        const char* content_encoding,
+        const char* host)
 {
     kii_http_client_code_t result = KII_HTTPC_FAIL;
     kii_error_code_t retval = prv_http_request_line_and_headers(kii, method,
             resource_path, content_type, access_token, etag);
-    if (encoding != NULL) {
+    if (content_encoding != NULL) {
         result = prv_kii_http_set_header(
             kii,
             "Content-Encoding",
-            encoding
+            content_encoding
         );
     }
 
@@ -927,8 +941,8 @@ kii_core_upload_thing_state(
         const char* thing_id,
         const char* state,
         const char* content_type,
-        const char* encoding
-        )
+        const char* content_encoding,
+        const char* normalizer_host)
 {
     kii_error_code_t result;
     char* access_token;

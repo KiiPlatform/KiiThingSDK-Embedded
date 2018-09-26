@@ -160,6 +160,7 @@ typedef struct kii_http_context_t
      */
     const char* host;
 
+    const char* normalizer_host;
     /** socket context used by the http client
      *
      * This field becomes activate, if KII_USE_CUSTOM_HTTP_CLIENT is not
@@ -562,7 +563,8 @@ kii_core_upload_thing_state(
         const char* thing_id,
         const char* state,
         const char* content_type,
-        const char* encoding);
+        const char* content_encoding,
+        const char* normalizer_host);
 
 /** prepare request of create object.
  * after this method succeeded, state of SDK becomes KII_STATE_READY.<br>
