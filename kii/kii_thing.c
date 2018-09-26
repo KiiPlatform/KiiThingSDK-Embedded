@@ -190,6 +190,7 @@ int kii_thing_upload_state(
     ret = 0;
 
 exit:
+    kii->kii_core.http_context.normalizer_host = NULL;
     return ret;
 }
 /* vim:set ts=4 sts=4 sw=4 et fenc=UTF-8 ff=unix: */
