@@ -72,6 +72,13 @@
 const char DEFAULT_OBJECT_CONTENT_TYPE[] = "application/json";
 const char CONTENT_UPDATE_STATE[] = "application/vnd.kii.MultipleTraitState+json";
 
+void prv_set_thing_if_path(kii_core_t* kii, const char* thing_id)
+{
+    kii_sprintf(kii->_http_request_path,
+        "thing-if/apps/%s/targets/thing:%s",
+        kii->app_id,
+        thing_id);
+}
     kii_error_code_t
 _kii_core_init_with_info(
         kii_core_t* kii,
@@ -158,7 +165,8 @@ prv_kii_http_execute(kii_core_t* kii)
                 KII_HTTP_ERROR_NONE;
             return KII_HTTPC_AGAIN;
         case PRV_KII_SOCKET_STATE_CONNECT:
-            char* host_str = http_context->host;
+        {
+            char *host_str = http_context->host;
             if (http_context->normalizer_host != NULL) {
                 host_str = http_context->normalizer_host;
             }
@@ -178,6 +186,7 @@ prv_kii_http_execute(kii_core_t* kii)
             /* This is programing error. */
             M_KII_ASSERT(0);
             return KII_HTTPC_FAIL;
+        }
         case PRV_KII_SOCKET_STATE_SEND:
         {
             size_t size =
@@ -346,14 +355,10 @@ prv_kii_http_execute(kii_core_t* kii)
 prv_kii_http_set_request_line(
         kii_core_t* kii,
         const char* method,
-        const char* resource_path,
-        const char* normalizer_host)
+        const char* resource_path)
 {
     kii_http_context_t* http_context = &(kii->http_context);
     http_context->host = kii->app_host;
-    if (normalizer_host != NULL) {
-        http_context->normalizer_host = normalizer_host;
-    }
 
     memset(http_context->buffer, 0x00, http_context->buffer_size);
 
@@ -365,8 +370,8 @@ prv_kii_http_set_request_line(
     }
 
     char* host_str = kii->app_host;
-    if (normalizer_host != NULL) {
-        host_str = normalizer_host;
+    if (http_context->normalizer_host != NULL) {
+        host_str = http_context->normalizer_host;
     }
     http_context->total_send_size =
         sprintf(http_context->buffer,
@@ -614,8 +619,7 @@ prv_http_request_line_and_headers(
         const char* resource_path,
         const char* content_type,
         const char* access_token,
-        const char* etag,
-        const char* host)
+        const char* etag)
 {
     kii_http_client_code_t result;
     result = prv_kii_http_set_request_line(kii, method, resource_path);
@@ -686,8 +690,7 @@ prv_http_request(
         const char* access_token,
         const char* etag,
         const char* body,
-        const char* content_encoding,
-        const char* host)
+        const char* content_encoding)
 {
     kii_http_client_code_t result = KII_HTTPC_FAIL;
     kii_error_code_t retval = prv_http_request_line_and_headers(kii, method,
@@ -941,13 +944,11 @@ kii_core_upload_thing_state(
         const char* thing_id,
         const char* state,
         const char* content_type,
-        const char* content_encoding,
-        const char* normalizer_host)
+        const char* content_encoding)
 {
     kii_error_code_t result;
     char* access_token;
     M_ACCESS_TOKEN(access_token, kii->author.access_token);
-
     prv_set_thing_if_path(kii, thing_id);
     if (content_type == NULL) {
         content_type = CONTENT_UPDATE_STATE;
@@ -960,7 +961,7 @@ kii_core_upload_thing_state(
             access_token,
             NULL,
             state,
-            encoding);
+            content_encoding);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1417,13 +1418,6 @@ prv_set_mqtt_endpoint_path(kii_core_t* kii, const char* installation_id)
             "api/apps/%s/installations/%s/mqtt-endpoint",
             kii->app_id,
             installation_id);
-}
-void prv_set_thing_if_path(kii_core_t* kii, const char* thing_id)
-{
-    kii_sprintf(kii->_http_request_path,
-        "thing-if/apps/%s/targets/thing:%s",
-        kii->app_id,
-        thing_id);
 }
     kii_error_code_t
 kii_core_install_thing_push(

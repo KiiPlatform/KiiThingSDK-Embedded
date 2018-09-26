@@ -168,12 +168,16 @@ int kii_thing_upload_state(
     kii_json_field_t fields[3];
     kii_json_parse_result_t result;
 
+    if (normalizer_host != NULL) {
+        kii->kii_core.http_context.normalizer_host = normalizer_host;
+    }
+
     core_err = kii_core_upload_thing_state(
         &kii->kii_core,
         thing_id,
         thing_state,
         content_type,
-        encoding);
+        content_encoding);
     if (core_err != KIIE_OK) {
         goto exit;
     }
