@@ -111,7 +111,7 @@ int kii_thing_register(
         goto exit;
     }
     do {
-        core_err = kii_core_run(&kii->kii_core); 
+        core_err = kii_core_run(&kii->kii_core);
         state = kii_core_get_state(&kii->kii_core);
     } while (state != KII_STATE_IDLE);
     if (core_err != KIIE_OK) {
@@ -144,6 +144,46 @@ int kii_thing_register(
     result = prv_kii_json_read_object(kii, buf, buf_size, fields);
     if (result != KII_JSON_PARSE_SUCCESS) {
         ret = -1;
+        goto exit;
+    }
+    ret = 0;
+
+exit:
+    return ret;
+}
+
+int kii_thing_upload_state(
+        kii_t* kii,
+        const char* thing_id,
+        const char* thing_state,
+        const char* content_type,
+        const char* encoding)
+{
+    char* buf = NULL;
+    size_t buf_size = 0;
+    int ret = -1;
+    kii_error_code_t core_err;
+    kii_state_t state;
+    kii_json_field_t fields[3];
+    kii_json_parse_result_t result;
+
+    core_err = kii_core_upload_thing_state(
+        &kii->kii_core,
+        thing_id,
+        thing_state,
+        content_type,
+        encoding);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    do {
+        core_err = kii_core_run(&kii->kii_core);
+        state = kii_core_get_state(&kii->kii_core);
+    } while (state != KII_STATE_IDLE);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    if(kii->kii_core.response_code < 200 || 300 <= kii->kii_core.response_code) {
         goto exit;
     }
     ret = 0;
