@@ -153,6 +153,14 @@ int kii_thing_register(
 		const char* thing_type,
 		const char* password);
 
+int kii_thing_upload_state(
+		kii_t* kii,
+		const char* thing_id,
+		const char* thing_state,
+		const char* content_type,
+		const char* content_encoding,
+		const char* normalizer_host);
+
 /** Create new object
  *  \param [inout] kii sdk instance.
  *  \param [in] bucket specify the bucket of which object is stored.
@@ -438,7 +446,7 @@ int kii_push_delete_topic(
  *  After succeeded, callback is called when push message is delivered to this
  *  thing.
  *  \param [inout] kii sdk instance.
- *  \param [in] callback  callback function called when push message delivered. 
+ *  \param [in] callback  callback function called when push message delivered.
  *  \return 0:success, -1: failure
  */
 int kii_push_start_routine(

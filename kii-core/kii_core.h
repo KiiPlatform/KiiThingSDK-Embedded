@@ -160,6 +160,7 @@ typedef struct kii_http_context_t
      */
     const char* host;
 
+    const char* normalizer_host;
     /** socket context used by the http client
      *
      * This field becomes activate, if KII_USE_CUSTOM_HTTP_CLIENT is not
@@ -368,7 +369,7 @@ typedef struct kii_core_t
      * value is set by implementation of KII_HTTPCB_EXECUTE
      */
     int response_code;
-    /** HTTP response body 
+    /** HTTP response body
      * value is set by implementation of KII_HTTPCB_EXECUTE
      */
     char* response_body;
@@ -555,6 +556,14 @@ kii_error_code_t
 kii_core_thing_authentication(kii_core_t* kii,
         const char* vendor_thing_id,
         const char* password);
+
+kii_error_code_t
+kii_core_upload_thing_state(
+        kii_core_t* kii,
+        const char* thing_id,
+        const char* state,
+        const char* content_type,
+        const char* content_encoding);
 
 /** prepare request of create object.
  * after this method succeeded, state of SDK becomes KII_STATE_READY.<br>

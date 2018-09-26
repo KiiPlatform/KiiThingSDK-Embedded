@@ -70,7 +70,15 @@
 #define KII_SDK_INFO "sn=tec;sv=1.2.5"
 
 const char DEFAULT_OBJECT_CONTENT_TYPE[] = "application/json";
+const char CONTENT_UPDATE_STATE[] = "application/vnd.kii.MultipleTraitState+json";
 
+void prv_set_thing_if_path(kii_core_t* kii, const char* thing_id)
+{
+    kii_sprintf(kii->_http_request_path,
+        "thing-if/apps/%s/targets/thing:%s",
+        kii->app_id,
+        thing_id);
+}
     kii_error_code_t
 _kii_core_init_with_info(
         kii_core_t* kii,
@@ -157,6 +165,11 @@ prv_kii_http_execute(kii_core_t* kii)
                 KII_HTTP_ERROR_NONE;
             return KII_HTTPC_AGAIN;
         case PRV_KII_SOCKET_STATE_CONNECT:
+        {
+            char *host_str = http_context->host;
+            if (http_context->normalizer_host != NULL) {
+                host_str = http_context->normalizer_host;
+            }
             switch (http_context->connect_cb(&(http_context->socket_context),
                             http_context->host, KII_SERVER_PORT)) {
                 case KII_SOCKETC_OK:
@@ -173,6 +186,7 @@ prv_kii_http_execute(kii_core_t* kii)
             /* This is programing error. */
             M_KII_ASSERT(0);
             return KII_HTTPC_FAIL;
+        }
         case PRV_KII_SOCKET_STATE_SEND:
         {
             size_t size =
@@ -355,9 +369,13 @@ prv_kii_http_set_request_line(
         return KII_HTTPC_FAIL;
     }
 
+    char* host_str = kii->app_host;
+    if (http_context->normalizer_host != NULL) {
+        host_str = http_context->normalizer_host;
+    }
     http_context->total_send_size =
         sprintf(http_context->buffer,
-                "%s https://%s/%s HTTP/1.0\r\n", method, kii->app_host,
+                "%s https://%s/%s HTTP/1.0\r\n", method, host_str,
                 resource_path);
 
     http_context->_body_position =
@@ -653,7 +671,7 @@ prv_http_request_line_and_headers(
         result = prv_kii_http_set_header(
                 kii,
                 "if-match",
-                etag 
+                etag
                 );
         if (result != KII_HTTPC_OK) {
             M_KII_LOG(M_REQUEST_LINE_CB_FAILED);
@@ -671,11 +689,19 @@ prv_http_request(
         const char* content_type,
         const char* access_token,
         const char* etag,
-        const char* body)
+        const char* body,
+        const char* content_encoding)
 {
     kii_http_client_code_t result = KII_HTTPC_FAIL;
     kii_error_code_t retval = prv_http_request_line_and_headers(kii, method,
             resource_path, content_type, access_token, etag);
+    if (content_encoding != NULL) {
+        result = prv_kii_http_set_header(
+            kii,
+            "Content-Encoding",
+            content_encoding
+        );
+    }
 
     if (retval != KIIE_OK) {
         return retval;
@@ -820,8 +846,8 @@ kii_core_register_thing(
             "application/vnd.kii.ThingRegistrationAndAuthorizationRequest+json",
             NULL,
             NULL,
-            thing_data
-            );
+            thing_data,
+            NULL);
 
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
@@ -910,6 +936,36 @@ kii_core_register_thing_with_id(
 
     kii->_state = KII_STATE_READY;
     return KIIE_OK;
+}
+
+    kii_error_code_t
+kii_core_upload_thing_state(
+        kii_core_t* kii,
+        const char* thing_id,
+        const char* state,
+        const char* content_type,
+        const char* content_encoding)
+{
+    kii_error_code_t result;
+    char* access_token;
+    M_ACCESS_TOKEN(access_token, kii->author.access_token);
+    prv_set_thing_if_path(kii, thing_id);
+    if (content_type == NULL) {
+        content_type = CONTENT_UPDATE_STATE;
+    }
+    result = prv_http_request(
+            kii,
+            "POST",
+            kii->_http_request_path,
+            content_type,
+            access_token,
+            NULL,
+            state,
+            content_encoding);
+    if (result == KIIE_OK) {
+        kii->_state = KII_STATE_READY;
+    }
+    return result;
 }
 
     static void
@@ -1014,7 +1070,8 @@ kii_core_create_new_object(
             object_content_type,
             access_token,
             NULL,
-            object_data);
+            object_data,
+            NULL);
 
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
@@ -1050,7 +1107,8 @@ kii_core_create_new_object_with_id(
             object_content_type,
             access_token,
             NULL,
-            object_data);
+            object_data,
+            NULL);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1081,7 +1139,8 @@ kii_core_patch_object(
             NULL,
             access_token,
             opt_etag,
-            patch_data);
+            patch_data,
+            NULL);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1112,7 +1171,8 @@ kii_core_replace_object(
             NULL,
             access_token,
             opt_etag,
-            replace_data);
+            replace_data,
+            NULL);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1140,6 +1200,7 @@ kii_core_get_object(
             kii->_http_request_path,
             NULL,
             access_token,
+            NULL,
             NULL,
             NULL);
     if (result == KIIE_OK) {
@@ -1170,6 +1231,7 @@ kii_core_delete_object(
             NULL,
             access_token,
             NULL,
+            NULL,
             NULL);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
@@ -1196,6 +1258,7 @@ kii_core_subscribe_bucket(
             kii->_http_request_path,
             NULL,
             access_token,
+            NULL,
             NULL,
             NULL);
     if (result == KIIE_OK) {
@@ -1225,6 +1288,7 @@ kii_core_unsubscribe_bucket(
             NULL,
             access_token,
             NULL,
+            NULL,
             NULL);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
@@ -1249,6 +1313,7 @@ kii_core_create_topic(
             NULL,
             access_token,
             NULL,
+            NULL,
             NULL);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
@@ -1272,6 +1337,7 @@ kii_core_delete_topic(
             kii->_http_request_path,
             NULL,
             access_token,
+            NULL,
             NULL,
             NULL);
     if (result == KIIE_OK) {
@@ -1300,6 +1366,7 @@ kii_core_subscribe_topic(
             NULL,
             access_token,
             NULL,
+            NULL,
             NULL);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
@@ -1327,6 +1394,7 @@ kii_core_unsubscribe_topic(
             kii->_http_request_path,
             NULL,
             access_token,
+            NULL,
             NULL,
             NULL);
     if (result == KIIE_OK) {
@@ -1430,6 +1498,7 @@ kii_core_get_mqtt_endpoint(
             kii->_http_request_path,
             NULL,
             access_token,
+            NULL,
             NULL,
             NULL);
     if (result == KIIE_OK) {
