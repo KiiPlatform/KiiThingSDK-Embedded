@@ -23,8 +23,8 @@ static long long current_timestamp() {
     return milliseconds;
 }
 
-static char THING_ID[] = "th.53ae324be5a0-26f8-4e11-a13c-03da6fb2";
-static char ACCESS_TOKEN[] = "ablTGrnsE20rSRBFKPnJkWyTaeqQ50msqUizvR_61hU";
+static char THING_ID[] = "th.56ab473c0260-180a-8e11-832c-035f9297";
+static char ACCESS_TOKEN[] = "eGV3NmJlcGlnNDdq.AdGs7hERfqKjTbnt5i33ayUQjR66BAISYY6taQP136c";
 static char BUCKET[] = "myBucket";
 static char TOPIC[] = "myTopic";
 static char BODY[] = "Stop the world!";
@@ -41,11 +41,12 @@ static void init(
         site = DEFAULT_SITE;
     }
     kii_impl_init(kii, site,
-            "84fff36e", "e45fcc2d31d6aca675af639bc5f04a26");
+            "xew6bepig47j", "722e206251424e5591410e7a87bd5f40");
 
     kii->kii_core.http_context.buffer = buffer;
     kii->kii_core.http_context.buffer_size = buffer_size;
     kii->mqtt_socket_context.app_context = NULL;
+    kii->kii_core.http_context.normalizer_host = NULL;
 
     strcpy(kii->kii_core.author.author_id, THING_ID);
     strcpy(kii->kii_core.author.access_token, ACCESS_TOKEN);
@@ -97,6 +98,30 @@ TEST(kiiTest, register)
     ASSERT_EQ(201, kii.kii_core.response_code);
     ASSERT_STRNE("", kii.kii_core.author.author_id);
     ASSERT_STRNE("", kii.kii_core.author.access_token);
+}
+
+TEST(kiiTest, thingState)
+{
+    int ret = -1;
+    char buffer[4096];
+    kii_t kii;
+
+    init(&kii, buffer, 4096);
+
+    kii.kii_core.response_code = 0;
+
+    // json format state
+    ret = kii_thing_upload_state(
+        &kii,
+        THING_ID,
+        "{\"AC\":{\"currentTemperature\": 23}}",
+        NULL,
+        NULL,
+        NULL,
+        0);
+    ASSERT_EQ(0, ret);
+    ASSERT_EQ(204, kii.kii_core.response_code);
+    ASSERT_TRUE(kii.kii_core.http_context.normalizer_host == NULL);
 }
 
 TEST(kiiTest, object)
@@ -419,7 +444,7 @@ TEST(kiiTest, genericApis)
 {
     char buffer[4096];
     kii_t kii;
-    const char* EX_AUTH_VENDOR_ID = "1426830900";
+    const char* EX_AUTH_VENDOR_ID = "test-1";
     const char* EX_AUTH_VENDOR_PASS = "1234";
     kii_json_t kii_json;
     kii_json_field_t fields[3];
@@ -466,7 +491,7 @@ TEST(kiiTest, genericApis)
                     kii.kii_core.http_context.buffer_size -
                         (kii.kii_core.http_context.buffer -
                                 kii.kii_core.response_body), fields));
-    ASSERT_STREQ("th.53ae324be5a0-6a8a-4e11-7cec-026e0383", author_id);
+    ASSERT_STREQ("th.56ab473c0260-180a-8e11-832c-035f9297", author_id);
     ASSERT_STRNE("", access_token);
 }
 
