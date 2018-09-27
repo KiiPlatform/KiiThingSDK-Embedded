@@ -158,7 +158,8 @@ int kii_thing_upload_state(
         const char* thing_state,
         const char* content_type,
         const char* content_encoding,
-        const char* normalizer_host)
+        const char* normalizer_host,
+        const size_t binary_body_len)
 {
     char* buf = NULL;
     size_t buf_size = 0;
@@ -177,7 +178,8 @@ int kii_thing_upload_state(
         thing_id,
         thing_state,
         content_type,
-        content_encoding);
+        content_encoding,
+        binary_body_len);
     if (core_err != KIIE_OK) {
         goto exit;
     }
