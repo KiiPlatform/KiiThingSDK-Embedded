@@ -23,6 +23,8 @@ const char EX_TOPIC_NAME[] = "my_topic";
 const char EX_OBJECT_DATA[] = "{}";
 const char EX_BODY_DATA[] = "Hello world !\n";
 const char EX_ENDPOINT_NAME[] = "test_topic";
+const char EX_BINARY_STATE_FILE[] = "./state.gz";
+const char EX_DATA_NORMALIZER_HOST[] = "host-of-data-normalizer";
 
 #ifdef __cplusplus
 }
