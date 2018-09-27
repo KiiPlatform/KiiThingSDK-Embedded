@@ -166,9 +166,11 @@ prv_kii_http_execute(kii_core_t* kii)
             return KII_HTTPC_AGAIN;
         case PRV_KII_SOCKET_STATE_CONNECT:
         {
-            char *host_str = http_context->host;
+            const char *host_str;
             if (http_context->normalizer_host != NULL) {
                 host_str = http_context->normalizer_host;
+            } else {
+                host_str = http_context->host;
             }
             switch (http_context->connect_cb(&(http_context->socket_context),
                             host_str, KII_SERVER_PORT)) {
@@ -357,6 +359,7 @@ prv_kii_http_set_request_line(
         const char* method,
         const char* resource_path)
 {
+    const char* host_str;
     kii_http_context_t* http_context = &(kii->http_context);
     http_context->host = kii->app_host;
 
@@ -369,9 +372,10 @@ prv_kii_http_set_request_line(
         return KII_HTTPC_FAIL;
     }
 
-    char* host_str = kii->app_host;
     if (http_context->normalizer_host != NULL) {
         host_str = http_context->normalizer_host;
+    } else {
+        host_str = kii->app_host;
     }
     http_context->total_send_size =
         sprintf(http_context->buffer,

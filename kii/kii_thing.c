@@ -161,13 +161,9 @@ int kii_thing_upload_state(
         const char* normalizer_host,
         const size_t binary_body_len)
 {
-    char* buf = NULL;
-    size_t buf_size = 0;
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    kii_json_field_t fields[3];
-    kii_json_parse_result_t result;
 
     if (normalizer_host != NULL) {
         kii->kii_core.http_context.normalizer_host = normalizer_host;
