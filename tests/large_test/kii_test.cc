@@ -13,6 +13,16 @@
 #include <kii_json.h>
 #include <kii_init_impl.h>
 
+#include <sys/time.h>
+
+static long long current_timestamp() {
+    struct timeval te;
+    gettimeofday(&te, NULL); // get current time
+    long long milliseconds = te.tv_sec*1000LL + te.tv_usec/1000; // calculate milliseconds
+    // printf("milliseconds: %lld\n", milliseconds);
+    return milliseconds;
+}
+
 static char THING_ID[] = "th.53ae324be5a0-26f8-4e11-a13c-03da6fb2";
 static char ACCESS_TOKEN[] = "ablTGrnsE20rSRBFKPnJkWyTaeqQ50msqUizvR_61hU";
 static char BUCKET[] = "myBucket";
@@ -74,7 +84,7 @@ TEST(kiiTest, register)
     char vendorId[1024];
     kii_t kii;
 
-    sprintf(vendorId, "%d", getpid());
+    sprintf(vendorId, "%lld", current_timestamp());
 
     init(&kii, buffer, 4096);
 
