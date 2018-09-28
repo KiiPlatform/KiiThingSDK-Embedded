@@ -329,7 +329,7 @@ int main(int argc, char** argv)
                     "application/json",
                     "gzip",
                     EX_DATA_NORMALIZER_HOST,
-                    &fileLen);
+                    fileLen);
                 if(ret == 0) {
                     printf("success!\n");
                 } else {
@@ -338,7 +338,7 @@ int main(int argc, char** argv)
                 break;
             case 21:
                 printf("Upload json format state\n");
-                char* state = "{\"AC\":{\"currentTemperature\":23}}";
+                const char* state = "{\"AC\":{\"currentTemperature\":23}}";
                 ret = kii_thing_upload_state(
                     &kii,
                     EX_THING_ID,
@@ -346,7 +346,7 @@ int main(int argc, char** argv)
                     NULL,
                     NULL,
                     NULL,
-                    NULL);
+                    strlen(state));
                 if(ret == 0) {
                     printf("success!\n");
                 } else {
