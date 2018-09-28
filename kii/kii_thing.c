@@ -8,7 +8,7 @@
 
 #include <kii_core.h>
 
-#define KII_SDK_INFO "sn=te;sv=1.2.5"
+#define KII_SDK_INFO "sn=te;sv=1.2.6"
 
 int _kii_init_with_info(
         kii_t* kii,
@@ -111,7 +111,7 @@ int kii_thing_register(
         goto exit;
     }
     do {
-        core_err = kii_core_run(&kii->kii_core); 
+        core_err = kii_core_run(&kii->kii_core);
         state = kii_core_get_state(&kii->kii_core);
     } while (state != KII_STATE_IDLE);
     if (core_err != KIIE_OK) {

@@ -67,7 +67,7 @@
 #define HTTP1_1 "HTTP/1.1 "
 #define END_OF_HEADER "\r\n\r\n"
 #define CONST_LEN(str) sizeof(str) - 1
-#define KII_SDK_INFO "sn=tec;sv=1.2.5"
+#define KII_SDK_INFO "sn=tec;sv=1.2.6"
 
 const char DEFAULT_OBJECT_CONTENT_TYPE[] = "application/json";
 
@@ -653,7 +653,7 @@ prv_http_request_line_and_headers(
         result = prv_kii_http_set_header(
                 kii,
                 "if-match",
-                etag 
+                etag
                 );
         if (result != KII_HTTPC_OK) {
             M_KII_LOG(M_REQUEST_LINE_CB_FAILED);
