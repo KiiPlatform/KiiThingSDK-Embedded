@@ -35,6 +35,7 @@ void kii_core_impl_init(
     http_ctx->recv_cb = s_recv_cb;
     http_ctx->close_cb = s_close_cb;
     http_ctx->socket_context.app_context = NULL;
+    http_ctx->normalizer_host = NULL;
 
     kii->logger_cb = logger_cb;
 }
