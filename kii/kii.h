@@ -153,6 +153,18 @@ int kii_thing_register(
 		const char* thing_type,
 		const char* password);
 
+/** Upload state of thing
+ *  \param [inout] kii sdk instance.
+ *  \param [in] thing_id the thing identifier given by kii cloud.
+ *  \param [in] state state to upload.
+ *  \param [in] content_type type of state, if NULL provided, sdk used defaulted
+ *  CONTENT_UPDATE_STATE(application/vnd.kii.MultipleTraitState+json).
+ *  \param [in] content_encoding encoding of state used. If NULL provided, sdk
+ *  not add Content-encoding header
+ *  \param [in] normalizer_host host name of data normalizer, can be NULL.
+ *  \param [in] content_length length of body.
+ *  \return 0:success, 1: failure
+ */
 int kii_thing_upload_state(
 		kii_t* kii,
 		const char* thing_id,
@@ -160,7 +172,7 @@ int kii_thing_upload_state(
 		const char* content_type,
 		const char* content_encoding,
 		const char* normalizer_host,
-		const size_t* content_len);
+		const size_t content_length);
 
 /** Create new object
  *  \param [inout] kii sdk instance.

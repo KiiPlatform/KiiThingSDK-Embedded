@@ -152,18 +152,6 @@ exit:
     return ret;
 }
 
-/** Upload state of thing
- *  \param [inout] kii sdk instance.
- *  \param [in] thing_id the thing identifier given by kii cloud.
- *  \param [in] state state to upload.
- *  \param [in] content_type type of state, if NULL provided, sdk used defaulted
- *  CONTENT_UPDATE_STATE(application/vnd.kii.MultipleTraitState+json).
- *  \param [in] content_encoding encoding of state used. If NULL provided, sdk
- *  not add Content-encoding header
- *  \param [in] normalizer_host host name of data normalizer, can be NULL.
- *  \param [in] content_length if NULL provided, sdk check string length of body.
- *  \return 0:success, 1: failure
- */
 int kii_thing_upload_state(
         kii_t* kii,
         const char* thing_id,
@@ -171,7 +159,7 @@ int kii_thing_upload_state(
         const char* content_type,
         const char* content_encoding,
         const char* normalizer_host,
-        const size_t* content_len)
+        const size_t content_length)
 {
     int ret = -1;
     kii_error_code_t core_err;
@@ -187,7 +175,7 @@ int kii_thing_upload_state(
         thing_state,
         content_type,
         content_encoding,
-        content_len);
+        &content_length);
     if (core_err != KIIE_OK) {
         goto exit;
     }

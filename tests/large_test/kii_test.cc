@@ -111,14 +111,15 @@ TEST(kiiTest, thingState)
     kii.kii_core.response_code = 0;
 
     // json format state
+    const char* state = "{\"AC\":{\"currentTemperature\": 23}}";
     ret = kii_thing_upload_state(
         &kii,
         THING_ID,
-        "{\"AC\":{\"currentTemperature\": 23}}",
+        state,
         NULL,
         NULL,
         NULL,
-        0);
+        strlen(state));
     ASSERT_EQ(0, ret);
     ASSERT_EQ(204, kii.kii_core.response_code);
     ASSERT_TRUE(kii.kii_core.http_context.normalizer_host == NULL);
