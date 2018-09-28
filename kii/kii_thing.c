@@ -156,17 +156,14 @@ int kii_thing_upload_state(
         kii_t* kii,
         const char* thing_id,
         const char* thing_state,
+        const size_t content_length,
         const char* content_type,
         const char* content_encoding,
         const char* normalizer_host)
 {
-    char* buf = NULL;
-    size_t buf_size = 0;
     int ret = -1;
     kii_error_code_t core_err;
     kii_state_t state;
-    kii_json_field_t fields[3];
-    kii_json_parse_result_t result;
 
     if (normalizer_host != NULL) {
         kii->kii_core.http_context.normalizer_host = normalizer_host;
@@ -177,7 +174,8 @@ int kii_thing_upload_state(
         thing_id,
         thing_state,
         content_type,
-        content_encoding);
+        content_encoding,
+        &content_length);
     if (core_err != KIIE_OK) {
         goto exit;
     }
