@@ -116,10 +116,10 @@ TEST(kiiTest, thingState)
         &kii,
         THING_ID,
         state,
+        strlen(state),
         NULL,
         NULL,
-        NULL,
-        strlen(state));
+        NULL);
     ASSERT_EQ(0, ret);
     ASSERT_EQ(204, kii.kii_core.response_code);
     ASSERT_TRUE(kii.kii_core.http_context.normalizer_host == NULL);

@@ -326,10 +326,10 @@ int main(int argc, char** argv)
                     &kii,
                     EX_THING_ID,
                     fileContent,
+                    fileLen,
                     "application/json",
                     "gzip",
-                    EX_DATA_NORMALIZER_HOST,
-                    fileLen);
+                    EX_DATA_NORMALIZER_HOST);
                 if(ret == 0) {
                     printf("success!\n");
                 } else {
@@ -343,10 +343,10 @@ int main(int argc, char** argv)
                     &kii,
                     EX_THING_ID,
                     state,
+                    strlen(state),
                     NULL,
                     NULL,
-                    NULL,
-                    strlen(state));
+                    NULL);
                 if(ret == 0) {
                     printf("success!\n");
                 } else {
