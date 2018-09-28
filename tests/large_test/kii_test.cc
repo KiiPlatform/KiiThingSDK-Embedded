@@ -111,16 +111,14 @@ TEST(kiiTest, thingState)
     kii.kii_core.response_code = 0;
 
     // json format state
-    const char* state = "{\"AC\":{\"currentTemperature\": 23}}";
-    const int content_len = strlen(state);
     ret = kii_thing_upload_state(
         &kii,
         THING_ID,
-        state,
-        content_len,
+        "{\"AC\":{\"currentTemperature\": 23}}",
         NULL,
         NULL,
-        NULL);
+        NULL,
+        0);
     ASSERT_EQ(0, ret);
     ASSERT_EQ(204, kii.kii_core.response_code);
     ASSERT_TRUE(kii.kii_core.http_context.normalizer_host == NULL);
@@ -147,38 +145,38 @@ TEST(kiiTest, object)
     ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
 
-    // kii.kii_core.response_code = 0;
-    // ret = kii_object_patch(&kii, &bucket, objectId, "{}", NULL);
+    kii.kii_core.response_code = 0;
+    ret = kii_object_patch(&kii, &bucket, objectId, "{}", NULL);
 
-    // ASSERT_EQ(0, ret);
-    // ASSERT_EQ(200, kii.kii_core.response_code);
-    // ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
-    // ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
+    ASSERT_EQ(0, ret);
+    ASSERT_EQ(200, kii.kii_core.response_code);
+    ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
+    ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
 
-    // kii.kii_core.response_code = 0;
-    // ret = kii_object_replace(&kii, &bucket, objectId, "{}", NULL);
+    kii.kii_core.response_code = 0;
+    ret = kii_object_replace(&kii, &bucket, objectId, "{}", NULL);
 
-    // ASSERT_EQ(0, ret);
-    // ASSERT_EQ(200, kii.kii_core.response_code);
-    // ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
-    // ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
+    ASSERT_EQ(0, ret);
+    ASSERT_EQ(200, kii.kii_core.response_code);
+    ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
+    ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
 
-    // kii.kii_core.response_code = 0;
-    // ret = kii_object_get(&kii, &bucket, objectId);
+    kii.kii_core.response_code = 0;
+    ret = kii_object_get(&kii, &bucket, objectId);
 
-    // ASSERT_EQ(0, ret);
-    // ASSERT_TRUE(NULL != kii.kii_core.response_body);
-    // ASSERT_EQ(200, kii.kii_core.response_code);
-    // ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
-    // ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
+    ASSERT_EQ(0, ret);
+    ASSERT_TRUE(NULL != kii.kii_core.response_body);
+    ASSERT_EQ(200, kii.kii_core.response_code);
+    ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
+    ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
 
-    // kii.kii_core.response_code = 0;
-    // ret = kii_object_delete(&kii, &bucket, objectId);
+    kii.kii_core.response_code = 0;
+    ret = kii_object_delete(&kii, &bucket, objectId);
 
-    // ASSERT_EQ(0, ret);
-    // ASSERT_EQ(204, kii.kii_core.response_code);
-    // ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
-    // ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
+    ASSERT_EQ(0, ret);
+    ASSERT_EQ(204, kii.kii_core.response_code);
+    ASSERT_STREQ(THING_ID, kii.kii_core.author.author_id);
+    ASSERT_STREQ(ACCESS_TOKEN, kii.kii_core.author.access_token);
 }
 
 TEST(kiiTest, objectWithID)

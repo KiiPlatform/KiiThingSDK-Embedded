@@ -564,7 +564,7 @@ kii_core_upload_thing_state(
         const char* state,
         const char* content_type,
         const char* content_encoding,
-        const int binary_body_length);
+        const size_t binary_body_length);
 
 /** prepare request of create object.
  * after this method succeeded, state of SDK becomes KII_STATE_READY.<br>

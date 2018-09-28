@@ -695,7 +695,7 @@ prv_http_request(
         const char* etag,
         const char* body,
         const char* content_encoding,
-        const int content_len)
+        const size_t binary_body_length)
 {
     kii_http_client_code_t result = KII_HTTPC_FAIL;
     kii_error_code_t retval = prv_http_request_line_and_headers(kii, method,
@@ -715,8 +715,8 @@ prv_http_request(
     if (body != NULL) {
         size_t body_len;
         char content_length[8];
-        if (content_len >= 0 ) {
-            body_len = content_len;
+        if (binary_body_length != 0) {
+            body_len = binary_body_length;
         } else {
             body_len = kii_strlen(body);
         }
@@ -857,7 +857,7 @@ kii_core_register_thing(
             NULL,
             thing_data,
             NULL,
-            -1);
+            0);
 
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
@@ -955,7 +955,7 @@ kii_core_upload_thing_state(
         const char* state,
         const char* content_type,
         const char* content_encoding,
-        const int content_len)
+        const size_t binary_body_len)
 {
     kii_error_code_t result;
     char* access_token;
@@ -974,7 +974,7 @@ kii_core_upload_thing_state(
             NULL,
             state,
             content_encoding,
-            content_len);
+            binary_body_len);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1085,7 +1085,7 @@ kii_core_create_new_object(
             NULL,
             object_data,
             NULL,
-            -1);
+            0);
 
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
@@ -1123,7 +1123,7 @@ kii_core_create_new_object_with_id(
             NULL,
             object_data,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1156,7 +1156,7 @@ kii_core_patch_object(
             opt_etag,
             patch_data,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1189,7 +1189,7 @@ kii_core_replace_object(
             opt_etag,
             replace_data,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1220,7 +1220,7 @@ kii_core_get_object(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1251,7 +1251,7 @@ kii_core_delete_object(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1280,7 +1280,7 @@ kii_core_subscribe_bucket(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1310,7 +1310,7 @@ kii_core_unsubscribe_bucket(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1336,7 +1336,7 @@ kii_core_create_topic(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1362,7 +1362,7 @@ kii_core_delete_topic(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1391,7 +1391,7 @@ kii_core_subscribe_topic(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1421,7 +1421,7 @@ kii_core_unsubscribe_topic(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }
@@ -1526,7 +1526,7 @@ kii_core_get_mqtt_endpoint(
             NULL,
             NULL,
             NULL,
-            -1);
+            0);
     if (result == KIIE_OK) {
         kii->_state = KII_STATE_READY;
     }

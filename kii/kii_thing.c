@@ -156,10 +156,10 @@ int kii_thing_upload_state(
         kii_t* kii,
         const char* thing_id,
         const char* thing_state,
-        const int content_length,
         const char* content_type,
         const char* content_encoding,
-        const char* normalizer_host)
+        const char* normalizer_host,
+        const size_t binary_body_len)
 {
     int ret = -1;
     kii_error_code_t core_err;
@@ -175,7 +175,7 @@ int kii_thing_upload_state(
         thing_state,
         content_type,
         content_encoding,
-        content_length);
+        binary_body_len);
     if (core_err != KIIE_OK) {
         goto exit;
     }
