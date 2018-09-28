@@ -695,7 +695,7 @@ prv_http_request(
         const char* etag,
         const char* body,
         const char* content_encoding,
-        const size_t* content_length)
+        const size_t* preset_content_length)
 {
     kii_http_client_code_t result = KII_HTTPC_FAIL;
     kii_error_code_t retval = prv_http_request_line_and_headers(kii, method,
@@ -715,8 +715,8 @@ prv_http_request(
     if (body != NULL) {
         size_t body_len;
         char content_length[8];
-        if (content_length != NULL) {
-            body_len = *content_length;
+        if (preset_content_length != NULL) {
+            body_len = *preset_content_length;
         } else {
             body_len = kii_strlen(body);
         }
