@@ -329,7 +329,7 @@ int main(int argc, char** argv)
                     "application/json",
                     "gzip",
                     EX_DATA_NORMALIZER_HOST,
-                    fileLen);
+                    &fileLen);
                 if(ret == 0) {
                     printf("success!\n");
                 } else {
@@ -346,8 +346,7 @@ int main(int argc, char** argv)
                     NULL,
                     NULL,
                     NULL,
-                    0);
-                print_response(&kii.kii_core);
+                    NULL);
                 if(ret == 0) {
                     printf("success!\n");
                 } else {
