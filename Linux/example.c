@@ -91,6 +91,8 @@ int main(int argc, char** argv)
             {"unsubscribe-topic", no_argument, NULL, 17},
             {"push", no_argument, NULL,  18},
             {"server-code-execute", no_argument, NULL,  19},
+            {"upload-binary-thing-state", no_argument, NULL, 20},
+            {"upload-json-format-state", no_argument, NULL, 21},
             {"help", no_argument, NULL, 1000},
             {0, 0, 0, 0}
         };
@@ -103,7 +105,7 @@ int main(int argc, char** argv)
         switch (optval) {
             case 0:
                 printf("register thing\n");
-                ret = kii_thing_register(&kii, EX_AUTH_VENDOR_ID, 
+                ret = kii_thing_register(&kii, EX_AUTH_VENDOR_ID,
                         EX_AUTH_VENDOR_TYPE, EX_AUTH_VENDOR_PASS);
                 if(ret == 0) {
                     printf("success!\n");
@@ -178,7 +180,7 @@ int main(int argc, char** argv)
             case 8:
                 printf("upload body in multiple peces\n");
                 memset(upload_id, 0x00, sizeof(upload_id));
-                ret = kii_object_init_upload_body(&kii, &bucket, EX_OBJECT_ID, upload_id); 
+                ret = kii_object_init_upload_body(&kii, &bucket, EX_OBJECT_ID, upload_id);
                 if (ret != 0) {
                     printf("failed!\n");
                     break;
@@ -215,7 +217,7 @@ int main(int argc, char** argv)
                 break;
             case 10:
                 printf("download body in multiple peces\n");
-                ret = kii_object_download_body(&kii, &bucket, EX_OBJECT_ID, 0, 
+                ret = kii_object_download_body(&kii, &bucket, EX_OBJECT_ID, 0,
                         strlen(EX_BODY_DATA), &actual_length, &total_length);
                 if(ret == 0) {
                     printf("success!\n");
@@ -296,6 +298,55 @@ int main(int argc, char** argv)
             case 19:
                 printf("Server code execute\n");
                 ret = kii_server_code_execute(&kii, EX_ENDPOINT_NAME, NULL);
+                if(ret == 0) {
+                    printf("success!\n");
+                } else {
+                    printf("failed!\n");
+                }
+                break;
+            case 20:
+                printf("Upload binary state\n");
+                char fileContent[EX_BUFFER_SIZE + 1];
+                FILE *fp = fopen(EX_BINARY_STATE_FILE, "r");
+                size_t fileLen = 0;
+                if (fp != NULL) {
+                    fileLen = fread(fileContent, sizeof(char), 1000, fp);
+                    if (fileLen == 0) {
+                        fputs("Error reading file", stderr);
+                    } else {
+                        fileContent[fileLen] = '\0'; /* Just to be safe. */
+                    }
+
+                    fclose(fp);
+                } else {
+                    printf("failed to open file\n");
+                    break;
+                }
+                ret = kii_thing_upload_state(
+                    &kii,
+                    EX_THING_ID,
+                    fileContent,
+                    fileLen,
+                    "application/json",
+                    "gzip",
+                    EX_DATA_NORMALIZER_HOST);
+                if(ret == 0) {
+                    printf("success!\n");
+                } else {
+                    printf("failed!\n");
+                }
+                break;
+            case 21:
+                printf("Upload json format state\n");
+                const char* state = "{\"AC\":{\"currentTemperature\":23}}";
+                ret = kii_thing_upload_state(
+                    &kii,
+                    EX_THING_ID,
+                    state,
+                    strlen(state),
+                    NULL,
+                    NULL,
+                    NULL);
                 if(ret == 0) {
                     printf("success!\n");
                 } else {

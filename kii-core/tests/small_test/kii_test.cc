@@ -28,7 +28,7 @@
 #define DEF_DUMMY_KEY "DummyHeader"
 #define DEF_DUMMY_VALUE "DummyValue"
 #define DEF_DUMMY_HEADER DEF_DUMMY_KEY ":" DEF_DUMMY_VALUE
-#define DEF_SDK_VERSION "sn=tec;sv=1.2.5"
+#define DEF_SDK_VERSION "sn=tec;sv=1.2.6"
 
 #define SET_MOCK_HTTP_DATA(mock_http_body, data) \
   mock_http_body.body = data; \
@@ -540,7 +540,7 @@ TEST(kiiTest, create_new_object)
     ASSERT_EQ(201, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ(
             "{\n  \"objectID\" : \"10e9d740-673b-11e5-ac56-123143070e33\",\n  \"createdAt\" : 1443593908916,\n  \"dataType\" : \"application/json\"\n}",
@@ -613,7 +613,7 @@ TEST(kiiTest, create_new_object_with_id)
     ASSERT_EQ(201, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ(
             "{\n  \"createdAt\" : 1443595884290,\n  \"modifiedAt\" : 1443595884290\n}",
@@ -680,7 +680,7 @@ TEST(kiiTest, patch_object)
     ASSERT_EQ(200, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ(
             "{\"_owner\":\"" DEF_THING_ID "\",\"_created\":1443595884290,\"_id\":\"" DEF_OBJECT "\",\"_modified\":1444728170385,\"_version\":\"3\"}",
@@ -750,7 +750,7 @@ TEST(kiiTest, replace_object)
     ASSERT_EQ(200, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ(
             "{\n  \"createdAt\" : 1443595884290,\n  \"modifiedAt\" : 1444728675797\n}",
@@ -816,7 +816,7 @@ TEST(kiiTest, get_object)
     ASSERT_EQ(200, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ(
             "{\"_owner\":\"" DEF_THING_ID "\",\"_created\":1443595884290,\"_id\":\"" DEF_OBJECT "\",\"_modified\":1444728675797,\"_version\":\"4\"}",
@@ -879,7 +879,7 @@ TEST(kiiTest, delete_object)
     ASSERT_EQ(204, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ("", kii.response_body);
 }
@@ -940,7 +940,7 @@ TEST(kiiTest, subscribe_bucket)
     ASSERT_EQ(204, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ("", kii.response_body);
 }
@@ -1001,7 +1001,7 @@ TEST(kiiTest, unsubscribe_bucket)
     ASSERT_EQ(204, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ("", kii.response_body);
 }
@@ -1058,7 +1058,7 @@ TEST(kiiTest, create_topic)
     ASSERT_EQ(204, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ("",
             kii.response_body);
@@ -1116,7 +1116,7 @@ TEST(kiiTest, delete_topic)
     ASSERT_EQ(204, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ("", kii.response_body);
 }
@@ -1173,7 +1173,7 @@ TEST(kiiTest, subscribe_topic)
     ASSERT_EQ(204, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ("", kii.response_body);
 }
@@ -1231,7 +1231,7 @@ TEST(kiiTest, unsubscribe_topic)
     ASSERT_EQ(204, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ("", kii.response_body);
 }
@@ -1294,7 +1294,7 @@ TEST(kiiTest, install_thing_push)
     ASSERT_EQ(201, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ(
             "{\n"
@@ -1366,7 +1366,7 @@ TEST(kiiTest, get_endpoint)
     ASSERT_EQ(200, kii.response_code);
     ASSERT_STREQ(THING_ID, kii.author.author_id);
     ASSERT_STREQ(ACCESS_TOKEN, kii.author.access_token);
- 
+
     ASSERT_TRUE(kii.response_body != NULL);
     ASSERT_STREQ(
             "{\n"

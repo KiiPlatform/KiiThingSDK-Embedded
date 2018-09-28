@@ -8,7 +8,7 @@
 
 #include <kii_core.h>
 
-#define KII_SDK_INFO "sn=te;sv=1.2.5"
+#define KII_SDK_INFO "sn=te;sv=1.2.6"
 
 int _kii_init_with_info(
         kii_t* kii,
@@ -111,7 +111,7 @@ int kii_thing_register(
         goto exit;
     }
     do {
-        core_err = kii_core_run(&kii->kii_core); 
+        core_err = kii_core_run(&kii->kii_core);
         state = kii_core_get_state(&kii->kii_core);
     } while (state != KII_STATE_IDLE);
     if (core_err != KIIE_OK) {
@@ -149,6 +149,50 @@ int kii_thing_register(
     ret = 0;
 
 exit:
+    return ret;
+}
+
+int kii_thing_upload_state(
+        kii_t* kii,
+        const char* thing_id,
+        const char* thing_state,
+        const size_t content_length,
+        const char* content_type,
+        const char* content_encoding,
+        const char* normalizer_host)
+{
+    int ret = -1;
+    kii_error_code_t core_err;
+    kii_state_t state;
+
+    if (normalizer_host != NULL) {
+        kii->kii_core.http_context.normalizer_host = normalizer_host;
+    }
+
+    core_err = kii_core_upload_thing_state(
+        &kii->kii_core,
+        thing_id,
+        thing_state,
+        content_type,
+        content_encoding,
+        &content_length);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    do {
+        core_err = kii_core_run(&kii->kii_core);
+        state = kii_core_get_state(&kii->kii_core);
+    } while (state != KII_STATE_IDLE);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    if(kii->kii_core.response_code < 200 || 300 <= kii->kii_core.response_code) {
+        goto exit;
+    }
+    ret = 0;
+
+exit:
+    kii->kii_core.http_context.normalizer_host = NULL;
     return ret;
 }
 /* vim:set ts=4 sts=4 sw=4 et fenc=UTF-8 ff=unix: */
