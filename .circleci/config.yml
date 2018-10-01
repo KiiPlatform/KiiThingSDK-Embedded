@@ -94,7 +94,7 @@ workflows:
             - test
           filters:
             branches:
-              only: fix-deploy
+              only: master
             tags:
               only: /v[0-9]+(\.[0-9]+){0,2}([-+].+)?/
 
