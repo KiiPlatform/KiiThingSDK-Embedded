@@ -66,13 +66,12 @@ jobs:
     steps:
       - attach_workspace:
           at: kii/html
-      - run:
-          command: |
-      - git clone https://github.com/KiiPlatform/KiiThingSDK-Embedded.git
-      - cd KiiThingSDK-Embedded && git checkout gh-pages && git config user.email 'satoshi.kumano@kii.com' && git config user.name 'satoshi kumano'
-      - rm -rf KiiThingSDK-Embedded/api-doc && mkdir -p KiiThingSDK-Embedded/api-doc
-      - cp -r kii/html/ KiiThingSDK-Embedded/api-doc
-      - cd KiiThingSDK-Embedded && git add api-doc && git commit -m 'updated doc' && git push origin gh-pages
+      - run: |
+            git clone https://github.com/KiiPlatform/KiiThingSDK-Embedded.git
+            cd KiiThingSDK-Embedded && git checkout gh-pages && git config user.email 'satoshi.kumano@kii.com' && git config user.name 'satoshi kumano'
+            rm -rf KiiThingSDK-Embedded/api-doc && mkdir -p KiiThingSDK-Embedded/api-doc
+            cp -r kii/html/ KiiThingSDK-Embedded/api-doc
+            cd KiiThingSDK-Embedded && git add api-doc && git commit -m 'updated doc' && git push origin gh-pages
 
 workflows:
   version: 2
@@ -95,7 +94,7 @@ workflows:
             - test
           filters:
             branches:
-              only: master
+              only: fix-deploy
             tags:
               only: /v[0-9]+(\.[0-9]+){0,2}([-+].+)?/
 
