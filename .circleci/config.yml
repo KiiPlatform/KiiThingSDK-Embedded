@@ -69,9 +69,9 @@ jobs:
       - run: |
             git clone https://github.com/KiiPlatform/KiiThingSDK-Embedded.git
             cd KiiThingSDK-Embedded && git checkout gh-pages && git config user.email 'satoshi.kumano@kii.com' && git config user.name 'satoshi kumano'
-            rm -rf KiiThingSDK-Embedded/api-doc && mkdir -p KiiThingSDK-Embedded/api-doc
-            cp -r kii/html/ KiiThingSDK-Embedded/api-doc
-            cd KiiThingSDK-Embedded && git add api-doc && git commit -m 'updated doc' && git push origin gh-pages
+            rm -rf api-doc && mkdir -p api-doc
+            cp -r ../kii/html/ api-doc
+            git add api-doc && git commit -m 'updated doc' && git push origin gh-pages
 
 workflows:
   version: 2
