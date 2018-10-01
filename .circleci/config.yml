@@ -65,7 +65,7 @@ jobs:
     <<: *env
     steps:
       - attach_workspace:
-          at: kii/html
+          at: ./
       - run: |
             git clone https://$GH_TOKEN_FOR_HTTPS@github.com/KiiPlatform/KiiThingSDK-Embedded.git
             cd KiiThingSDK-Embedded && git checkout gh-pages && git config user.email 'satoshi.kumano@kii.com' && git config user.name 'satoshi kumano'
