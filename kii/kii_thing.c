@@ -197,7 +197,7 @@ exit:
     return ret;
 }
 
-int kii_thing_upload_partial_state(
+int kii_thing_patch_state(
         kii_t* kii,
         const char* thing_id,
         const char* thing_state,
@@ -219,7 +219,8 @@ int kii_thing_upload_partial_state(
         "PATCH",
         thing_id,
         thing_state,
-        content_type,
+        content_type == NULL?
+            "application/vnd.kii.MultipleTraitStatePatch+json" : content_type,
         content_encoding,
         &content_length);
     if (core_err != KIIE_OK) {

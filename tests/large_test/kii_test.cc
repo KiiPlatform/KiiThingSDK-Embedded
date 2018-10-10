@@ -125,12 +125,12 @@ TEST(kiiTest, thingState)
     ASSERT_TRUE(kii.kii_core.http_context.normalizer_host == NULL);
 
     const char* partial_state = "{\"AC\":{\"fanSpeed\":5}}";
-    ret = kii_thing_upload_partial_state(
+    ret = kii_thing_patch_state(
         &kii,
         THING_ID,
         partial_state,
         strlen(state),
-        "application/vnd.kii.MultipleTraitStatePatch+json",
+        NULL,
         NULL,
         NULL);
     ASSERT_EQ(0, ret);
