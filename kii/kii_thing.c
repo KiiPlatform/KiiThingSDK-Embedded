@@ -171,9 +171,56 @@ int kii_thing_upload_state(
 
     core_err = kii_core_upload_thing_state(
         &kii->kii_core,
+        "PUT",
         thing_id,
         thing_state,
         content_type,
+        content_encoding,
+        &content_length);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    do {
+        core_err = kii_core_run(&kii->kii_core);
+        state = kii_core_get_state(&kii->kii_core);
+    } while (state != KII_STATE_IDLE);
+    if (core_err != KIIE_OK) {
+        goto exit;
+    }
+    if(kii->kii_core.response_code < 200 || 300 <= kii->kii_core.response_code) {
+        goto exit;
+    }
+    ret = 0;
+
+exit:
+    kii->kii_core.http_context.normalizer_host = NULL;
+    return ret;
+}
+
+int kii_thing_patch_state(
+        kii_t* kii,
+        const char* thing_id,
+        const char* thing_state,
+        const size_t content_length,
+        const char* content_type,
+        const char* content_encoding,
+        const char* normalizer_host)
+{
+    int ret = -1;
+    kii_error_code_t core_err;
+    kii_state_t state;
+
+    if (normalizer_host != NULL) {
+        kii->kii_core.http_context.normalizer_host = normalizer_host;
+    }
+
+    core_err = kii_core_upload_thing_state(
+        &kii->kii_core,
+        "PATCH",
+        thing_id,
+        thing_state,
+        content_type == NULL?
+            "application/vnd.kii.MultipleTraitStatePatch+json" : content_type,
         content_encoding,
         &content_length);
     if (core_err != KIIE_OK) {

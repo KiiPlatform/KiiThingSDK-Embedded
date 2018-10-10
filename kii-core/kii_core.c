@@ -951,6 +951,7 @@ kii_core_register_thing_with_id(
     kii_error_code_t
 kii_core_upload_thing_state(
         kii_core_t* kii,
+        const char* method,
         const char* thing_id,
         const char* state,
         const char* content_type,
@@ -967,7 +968,7 @@ kii_core_upload_thing_state(
     }
     result = prv_http_request(
             kii,
-            "PUT",
+            method,
             kii->_http_request_path,
             content_type,
             access_token,

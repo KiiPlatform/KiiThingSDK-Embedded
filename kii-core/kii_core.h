@@ -560,6 +560,7 @@ kii_core_thing_authentication(kii_core_t* kii,
 kii_error_code_t
 kii_core_upload_thing_state(
         kii_core_t* kii,
+        const char* method,
         const char* thing_id,
         const char* state,
         const char* content_type,

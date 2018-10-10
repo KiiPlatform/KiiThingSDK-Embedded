@@ -123,6 +123,19 @@ TEST(kiiTest, thingState)
     ASSERT_EQ(0, ret);
     ASSERT_EQ(204, kii.kii_core.response_code);
     ASSERT_TRUE(kii.kii_core.http_context.normalizer_host == NULL);
+
+    const char* partial_state = "{\"AC\":{\"fanSpeed\":5}}";
+    ret = kii_thing_patch_state(
+        &kii,
+        THING_ID,
+        partial_state,
+        strlen(state),
+        NULL,
+        NULL,
+        NULL);
+    ASSERT_EQ(0, ret);
+    ASSERT_EQ(204, kii.kii_core.response_code);
+    ASSERT_TRUE(kii.kii_core.http_context.normalizer_host == NULL);
 }
 
 TEST(kiiTest, object)
