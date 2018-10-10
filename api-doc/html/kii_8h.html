@@ -140,6 +140,8 @@ Functions</h2></td></tr>
 <tr class="separator:aec3fb320fb8583b5c2581c2ac5e82b21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acef2565412df233aff46063cdf937601"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kii_8h.html#acef2565412df233aff46063cdf937601">kii_thing_upload_state</a> (<a class="el" href="structkii__t.html">kii_t</a> *kii, const char *thing_id, const char *thing_state, const size_t content_length, const char *content_type, const char *content_encoding, const char *normalizer_host)</td></tr>
 <tr class="separator:acef2565412df233aff46063cdf937601"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0bfd7042eb8508fd7eab722bbbe372e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kii_8h.html#a0bfd7042eb8508fd7eab722bbbe372e0">kii_thing_patch_state</a> (<a class="el" href="structkii__t.html">kii_t</a> *kii, const char *thing_id, const char *thing_state, const size_t content_length, const char *content_type, const char *content_encoding, const char *normalizer_host)</td></tr>
+<tr class="separator:a0bfd7042eb8508fd7eab722bbbe372e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ffb6e641951724793d748e1b2d6ae95"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kii_8h.html#a3ffb6e641951724793d748e1b2d6ae95">kii_object_create</a> (<a class="el" href="structkii__t.html">kii_t</a> *kii, const kii_bucket_t *bucket, const char *object_data, const char *object_content_type, char *out_object_id)</td></tr>
 <tr class="separator:a3ffb6e641951724793d748e1b2d6ae95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5021df06f305a6a3f9c45675b226542"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kii_8h.html#ac5021df06f305a6a3f9c45675b226542">kii_object_create_with_id</a> (<a class="el" href="structkii__t.html">kii_t</a> *kii, const kii_bucket_t *bucket, const char *object_id, const char *object_data, const char *object_content_type)</td></tr>
@@ -1388,6 +1390,75 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a0bfd7042eb8508fd7eab722bbbe372e0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int kii_thing_patch_state </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structkii__t.html">kii_t</a> *&#160;</td>
+          <td class="paramname"><em>kii</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>thing_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>thing_state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>content_length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>content_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>content_encoding</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>normalizer_host</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Patch state of thing </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">kii</td><td>sdk instance. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">thing_id</td><td>the thing identifier given by kii cloud. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>state to upload. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">content_length</td><td>length of body. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">content_type</td><td>type of state, if NULL provided, sdk used defaulted application/vnd.kii.MultipleTraitStatePatch+json. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">content_encoding</td><td>encoding of state used. If NULL provided, sdk not add Content-encoding header </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">normalizer_host</td><td>host name of data normalizer, can be NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0:success, 1: failure </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="aec3fb320fb8583b5c2581c2ac5e82b21"></a>
 <div class="memitem">
 <div class="memproto">
@@ -1508,7 +1579,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Mon Oct 1 2018 05:43:32 for Kii Thing SDK Embedded by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Oct 10 2018 09:42:17 for Kii Thing SDK Embedded by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.8
 </small></address>

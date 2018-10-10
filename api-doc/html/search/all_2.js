@@ -31,6 +31,7 @@ var searchData=
   ['kii_5fserver_5fcode_5fexecute',['kii_server_code_execute',['../kii_8h.html#ad33ef785d297fa9b8770e74e46bf78ec',1,'kii_server_code.c']]],
   ['kii_5ft',['kii_t',['../structkii__t.html',1,'']]],
   ['kii_5fthing_5fauthenticate',['kii_thing_authenticate',['../kii_8h.html#a2e22777f0e748d34bb0521c8f1968c0d',1,'kii_thing.c']]],
+  ['kii_5fthing_5fpatch_5fstate',['kii_thing_patch_state',['../kii_8h.html#a0bfd7042eb8508fd7eab722bbbe372e0',1,'kii_thing.c']]],
   ['kii_5fthing_5fregister',['kii_thing_register',['../kii_8h.html#aec3fb320fb8583b5c2581c2ac5e82b21',1,'kii_thing.c']]],
   ['kii_5fthing_5fupload_5fstate',['kii_thing_upload_state',['../kii_8h.html#acef2565412df233aff46063cdf937601',1,'kii_thing.c']]]
 ];
