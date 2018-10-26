@@ -163,7 +163,7 @@ int kii_thing_register(
  *  \param [in] content_encoding encoding of state used. If NULL provided, sdk
  *  not add Content-encoding header
  *  \param [in] normalizer_host host name of data normalizer, can be NULL.
- *  \return 0:success, 1: failure
+ *  \return 0:success, -1: failure
  */
 int kii_thing_upload_state(
 		kii_t* kii,
@@ -184,7 +184,7 @@ int kii_thing_upload_state(
  *  \param [in] content_encoding encoding of state used. If NULL provided, sdk
  *  not add Content-encoding header
  *  \param [in] normalizer_host host name of data normalizer, can be NULL.
- *  \return 0:success, 1: failure
+ *  \return 0:success, -1: failure
  */
 int kii_thing_patch_state(
 		kii_t* kii,
